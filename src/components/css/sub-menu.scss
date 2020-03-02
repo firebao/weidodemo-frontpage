@@ -1,0 +1,36 @@
+@import "@/assets/css/base.scss";
+.menu-block {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  height: 600px;
+  width: 600px;
+  padding: 30px 20px 0;
+  border: 1px solid $aux-color-green-var1;
+  border-radius: 5px;
+  background-color: $bg-color;
+  .menu-title {
+    font-size: 16px;
+    margin-bottom: 25px;
+    padding-bottom: 17px;
+    position: relative;
+    color: $text-color;
+  }
+  .sub-list {
+    padding-left: 0;
+    margin-bottom: 20px;
+    li {
+      font-size: 15px;
+      padding: 5px 0;
+    }
+  }
+  .title {
+    font-size: 11px;
+    font-weight: 900;
+  }
+  .menu-img {
+    height: 150px;
+    position: relative;
+    text-align: center;
+  }
+}

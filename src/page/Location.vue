@@ -1,0 +1,255 @@
+<template>
+  <div>
+    <mall-header></mall-header>
+    <main>
+      <div class="main-container">
+        <div class="location-input">
+          <div class="user-center flex h-right">
+            <router-link class="button-dashed item" to="/login">
+              登录
+            </router-link>
+            <router-link class="button-dashed item" to="/register">
+              注册
+            </router-link>
+            <router-link class="button-dashed item" to="/usercenter">
+              我的小家
+            </router-link>
+          </div>
+          <div class="input-box flex h-around v-middle">
+            <div
+              class="select-area flex h-around v-middle"
+              @click="dropdownSwitch"
+            >
+              <span class="city">白银市</span>
+              <span class="dropdown"></span>
+              <span class="divide-line-v"></span>
+            </div>
+            <div class="input-area">
+              <input type="text" />
+            </div>
+          </div>
+          <div class="city-list-area" v-show="dropdown">
+            <div class="list-header">
+              <span class="guess">猜您在</span>
+              <span class="city-name">白银市</span>
+              <div class="city-input">
+                <input type="text" placeholder="城市名称或拼音" />
+              </div>
+            </div>
+            <hr />
+            <div class="list-body">
+              <div class="row">
+                <div class="index-alpha">A</div>
+                <div class="list">
+                  <span class="item">鞍山</span>
+                  <span class="item">阿坝县</span>
+                  <span class="item">阿拉善左旗</span>
+                  <span class="item">阿鲁克而左右旗</span>
+                  <span class="item">安哥拉</span>
+                  <span class="item">安塞左呀溜溜地方</span>
+                  <span class="item">鞍山</span>
+                  <span class="item">阿坝县</span>
+                  <span class="item">阿拉善左旗</span>
+                  <span class="item">阿鲁克而左右旗</span>
+                  <span class="item">安哥拉</span>
+                  <span class="item">鞍山</span>
+                  <span class="item">阿坝县</span>
+                  <span class="item">阿拉善左旗</span>
+                  <span class="item">阿鲁克而左右旗</span>
+                  <span class="item">安哥拉</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="index-alpha">A</div>
+                <div class="list">
+                  <span class="item">鞍山</span>
+                  <span class="item">阿坝县</span>
+                  <span class="item">阿拉善左旗</span>
+                  <span class="item">阿鲁克而左右旗</span>
+                  <span class="item">安哥拉</span>
+                  <span class="item">安塞左呀溜溜地方</span>
+                  <span class="item">鞍山</span>
+                  <span class="item">阿坝县</span>
+                  <span class="item">阿拉善左旗</span>
+                  <span class="item">阿鲁克而左右旗</span>
+                  <span class="item">安哥拉</span>
+                  <span class="item">鞍山</span>
+                  <span class="item">阿坝县</span>
+                  <span class="item">阿拉善左旗</span>
+                  <span class="item">阿鲁克而左右旗</span>
+                  <span class="item">安哥拉</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <mall-footer></mall-footer>
+  </div>
+</template>
+<script>
+import MallHeader from "@/components/TheHeader";
+import MallFooter from "@/components/TheFooter";
+
+export default {
+  name: "Location",
+  data: function() {
+    return {
+      dropdown: false
+    };
+  },
+  components: {
+    MallHeader,
+    MallFooter
+  },
+  methods: {
+    dropdownSwitch() {
+      this.dropdown = !this.dropdown;
+    }
+  }
+};
+</script>
+<style scoped lang="scss">
+@import "@/assets/css/base.scss";
+.location-input {
+  height: 560px;
+  width: 100%;
+  .user-center {
+    width: 630px;
+    margin: 180px auto 0;
+    .item {
+      margin: 0 10px;
+      padding: 0 10px;
+    }
+  }
+
+  .input-box {
+    width: 630px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 20px auto 0;
+    height: 40px;
+    &:hover {
+      border-color: $accent-color;
+    }
+
+    .select-area {
+      margin: 5px;
+      width: 20%;
+      &:hover {
+        color: $accent-color;
+        .dropdown {
+          border-left-color: $accent-color;
+        }
+      }
+
+      .city {
+        font-size: 16px;
+      }
+      .dropdown {
+        width: 0;
+        height: 0;
+        content: "";
+        border: solid transparent;
+        border-left-color: #ccc;
+        border-width: 5px;
+      }
+      .divide-line-v {
+        height: 30px;
+        width: 1px;
+        background-color: #ccc;
+      }
+    }
+
+    .input-area {
+      input {
+        padding: 0 10px;
+        width: 450px;
+        height: 38px;
+        border: none;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+  .city-list-area {
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+    height: 400px;
+    width: 630px;
+    &:before,
+    &:after {
+      display: block;
+      width: 0;
+      height: 0;
+      content: "";
+      border: solid transparent;
+      position: absolute;
+      bottom: 100%;
+    }
+    &:before {
+      left: 20px;
+      border-width: 10px;
+      border-bottom-color: #ccc;
+    }
+    &:after {
+      left: 21px;
+      border-width: 9px;
+      border-bottom-color: $bg-color;
+    }
+
+    .list-header {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      .guess {
+        margin-right: 15px;
+      }
+      .city-name {
+        margin-right: 15px;
+        padding: 5px 10px;
+        background: $primary-color-base;
+      }
+      .city-input {
+        height: 30px;
+        border-left: 2px solid #ccc;
+        padding-left: 15px;
+        input {
+          height: 30px;
+          padding: 0 5px;
+        }
+      }
+    }
+    hr {
+      border: 1px solid #ccc;
+    }
+    .list-body {
+      padding: 15px 0;
+      .row {
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+        .index-alpha {
+          padding-right: 40px;
+        }
+        .list {
+          display: flex;
+          flex-wrap: wrap;
+          .item {
+            width: 90px;
+            margin: 0 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+}
+</style>

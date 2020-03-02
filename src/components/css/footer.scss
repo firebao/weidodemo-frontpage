@@ -1,0 +1,114 @@
+footer {
+
+  width: 100%;
+  background-color: #e4e4e4;
+  height: 340px;
+
+  .container {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 30px 100px;
+
+    .footer-head {
+      display: flex;
+      justify-content: space-between;
+      height: 145px;
+
+      .info {
+        position: relative;
+        width: 240px;
+        background-color: #999;
+        height: 100%;
+        padding: 10px;
+        
+        ul {
+          padding: 10px;
+          list-style: none;
+        }
+      }
+
+      .footer-columns {
+          display: flex;
+          justify-content:space-between;
+
+          .footer-column {
+            text-align: center;
+            padding: 10px;
+            width: 135px;
+            height: 145px;
+            background-color: #ccc;
+            margin-left: 15px;
+
+            .column-title {
+              font-weight: 900;
+            }
+
+            ul {
+              padding: 10px 0;
+              list-style: none;
+              
+              a {
+                color: #666;
+              }
+            }
+          }
+      }
+    }
+    .footer-bot {
+      margin-top: 40px;
+      height: 100px;
+      display: flex;
+      justify-content: space-between;
+
+      .copy-right {
+        position: relative;
+        width: 420px;
+        height: 100px;
+        background-color: #999;        
+        padding: 10px;
+
+        a {
+          p {
+            position: absolute;
+            top: 18px;
+            left: 60px;
+            color: black;
+            font-size: 16px;
+            font-weight: 900;
+          }
+        }
+      }
+
+      p {
+        font-size: 12px;
+      }
+      
+      .qr-code {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 10px;
+        width: 550px;
+        height: 100px;
+        background-color: #999;
+        
+        .qr-item {
+          display: flex;
+          align-items: center;
+          p {
+            padding-right: 5px;
+            font-size: 14px;
+            font-weight: 900;
+          }
+          img {
+            width: 70px;
+            height: 70px;
+          }
+        }
+      }
+    }
+  }
+}
+a:hover {
+  color: #7fba00;
+}

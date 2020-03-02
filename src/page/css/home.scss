@@ -1,0 +1,18 @@
+section.main{
+  position: relative;
+
+  .img-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    z-index: -1;
+
+    img {
+      width: 715px;
+      height: 715px;
+      opacity: 0.25;
+    }
+  }
+}

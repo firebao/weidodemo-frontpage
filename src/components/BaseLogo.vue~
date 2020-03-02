@@ -1,0 +1,77 @@
+<template>
+  <div class="main-logo">
+    <router-link class="flex v-middle" to="/" v-if="type === 'single'">
+      <icon-svg class="i40" icon-class="logo"></icon-svg>
+      <strong>
+        Weido
+      </strong>
+    </router-link>
+    <router-link class="flex v-middle" to="/" v-else>
+      <icon-svg class="i40" icon-class="logo"></icon-svg>
+      <p class="big">WeiDo</p>
+      <p class="small">we will do what you need</p>
+    </router-link>
+  </div>
+</template>
+<script>
+export default {
+  name: "BaseLogo",
+  props: {
+    type: {
+      type: String,
+      default: "single",
+      validator: function(value) {
+        return ["single", "complex"].indexOf(value) !== -1;
+      }
+    }
+  }
+};
+</script>
+<style scoped lang="scss">
+@import "@/assets/css/base.scss";
+.main-logo {
+  position: relative;
+
+  a {
+    height: 40px;
+
+    &:hover {
+      /deep/ svg {
+        use {
+          --hover-color: #7fba00;
+        }
+      }
+      strong,
+      p,
+      small {
+        color: $accent-color;
+      }
+    }
+
+    strong {
+      color: $text-color;
+      font-size: 20px;
+      position: relative;
+      font-weight: 900;
+      margin: 0 10px;
+    }
+
+    .big {
+      position: absolute;
+      left: 50px;
+      top: 0;
+      color: $text-color;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .small {
+      position: absolute;
+      left: 50px;
+      top: 20px;
+      color: $secondary-text-color;
+      font-weight: 600;
+    }
+  }
+}
+</style>

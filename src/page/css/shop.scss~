@@ -1,0 +1,82 @@
+@import "@/assets/css/base.scss";
+main {
+  .top-section {
+
+    .main-container {
+      height: 40px;
+      background-color: $primary-color-base;
+      border-radius: 5px;
+
+      .flex-box {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .my-location {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+
+          p {
+            height: 16px;
+            line-height: 16px;
+            margin-right: 10px;
+
+            span {
+              color: $secondary-text-color;
+            }
+            .button-dashed {
+              height: 20px;
+              line-height: 18px;
+            }
+          }      
+        } 
+
+        .user-center {
+          display: inline-flex;
+
+          .button-dashed {
+            margin: 0 5px;
+          }
+        }
+      }
+    }
+  }
+
+  .category-and-search {
+    margin-top: 15px;
+
+    .main-container {
+      height: 125px;
+      background-color: $primary-color-base;
+      border-radius: 5px;
+      
+      .flex-box {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .category {
+          display: inline-flex;
+
+          p {
+            height: 16px;
+            line-height: 16px;
+          }
+
+          ul {
+            height: 16px;
+            line-height: 16px;
+            display: inline-flex;
+
+            li {
+              margin: 0 10px;
+            }
+          } 
+        }
+      }
+    }
+  }
+}

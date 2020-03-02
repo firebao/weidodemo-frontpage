@@ -1,0 +1,154 @@
+<template>
+  <footer>
+    <div class="main-container">
+      <div class="footer-head flex h-between">
+        <div class="info">
+          <base-logo type="complex"></base-logo>
+          <ul>
+            <li>地址：XX市XX区XX街道XX号</li>
+            <li>邮箱：abc@def.com</li>
+            <li>电话：+086-0943-8563737</li>
+          </ul>
+        </div>
+        <div class="footer-columns flex h-between">
+          <div
+            v-for="(item, index) in footerInfo.footerNav"
+            class="footer-column"
+            :key="index"
+          >
+            <div class="column-title">
+              {{ item.name }}
+            </div>
+            <ul>
+              <li v-for="(subItem, subIndex) in item.subNav" :key="subIndex">
+                <router-link :to="subItem.url">{{ subItem.name }}</router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bot flex h-between">
+        <div class="copy-right">
+          <base-logo></base-logo>
+          <p>Copyright:2019-2028,围兜网weido.com.All rights reserved.</p>
+          <p>京ICP备XXXXXXXX号-X</p>
+        </div>
+        <div class="qr-code flex h-around">
+          <div class="qr-item flex v-middle">
+            <p>安卓app</p>
+            <img :src="require('@/assets/qr-code.png').default" alt="" />
+          </div>
+          <div class="qr-item flex v-middle">
+            <p>苹果app</p>
+            <img :src="require('@/assets/qr-code.png').default" alt="" />
+          </div>
+          <div class="qr-item flex v-middle">
+            <p>微信公众号</p>
+            <img :src="require('@/assets/qr-code.png').default" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</template>
+<script>
+import BaseLogo from "@/components/BaseLogo";
+export default {
+  name: "TheFooter",
+  data: function() {
+    return {
+      footerInfo: ""
+    };
+  },
+  mounted: async function() {
+    this.footerInfo = await this.$Http.getFooterInfo();
+  },
+  components: {
+    BaseLogo
+  }
+};
+</script>
+<style scoped lang="scss">
+footer {
+  width: 100%;
+  background-color: #e4e4e4;
+  height: 340px;
+  padding: 30px 0;
+  .footer-head {
+    height: 145px;
+    .info {
+      position: relative;
+      width: 300px;
+      background-color: #999999;
+      height: 100%;
+      padding: 10px;
+      ul {
+        padding: 10px;
+        list-style: none;
+      }
+    }
+    .footer-columns {
+      .footer-column {
+        text-align: center;
+        padding: 10px;
+        width: 150px;
+        height: 145px;
+        background-color: #ccc;
+        margin-left: 15px;
+        .column-title {
+          font-weight: 900;
+        }
+        ul {
+          padding: 10px 0;
+          list-style: none;
+          a {
+            color: #666;
+          }
+        }
+      }
+    }
+  }
+  .footer-bot {
+    margin-top: 40px;
+    height: 100px;
+    .copy-right {
+      position: relative;
+      width: 500px;
+      height: 100px;
+      background-color: #999;
+      padding: 10px;
+      a {
+        p {
+          position: absolute;
+          top: 18px;
+          left: 60px;
+          color: black;
+          font-size: 16px;
+          font-weight: 900;
+        }
+      }
+    }
+    p {
+      font-size: 12px;
+    }
+    .qr-code {
+      display: flex;
+      padding: 10px;
+      width: 550px;
+      height: 100px;
+      background-color: #999;
+      .qr-item {
+        p {
+          padding-right: 5px;
+          font-size: 14px;
+          font-weight: 900;
+        }
+        img {
+          width: 70px;
+          height: 70px;
+        }
+      }
+    }
+  }
+}
+</style>

@@ -1,0 +1,150 @@
+@import "@/assets/css/base.scss";
+.location-input {
+  height: 560px;
+  width: 100%;
+
+  .user-center {
+    width: 630px;
+    margin: 180px auto 0;
+    display: flex;
+    justify-content: flex-end;
+
+    .button-dashed { 
+      margin: 0 10px;
+      padding: 0 10px;
+    }
+  }
+
+  .input-box {
+    width: 630px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 20px auto 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    &:hover {
+      border-color: $accent-color;
+    }
+
+    .select-area {
+      margin: 5px;
+      width: 20%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 2px solid #ccc;
+      &:hover {
+        color: $accent-color;
+        .city:after {
+          border-left-color: $accent-color;
+        }
+      }
+
+      .city {
+        font-size: 16px;
+        position: relative;
+        &:after {
+          width: 0;
+          height: 0;
+          content: "";
+          border: solid transparent;
+          border-left-color: $text-color;
+          border-width: 5px;
+          position: absolute;
+          top: 6px;
+          right: -20px;
+        }
+      }
+    }
+
+    .input-area {
+      input {
+        padding: 0 10px;
+        width: 450px;
+        height: 38px;
+        border: none;
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+  .city-list-area {
+    position: relative;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+    height: 400px;
+    width: 630px;
+    &:before, &:after {
+      display: block;
+      width: 0;
+      height: 0;
+      content: "";
+      border: solid transparent;
+      position: absolute;
+      bottom: 100%;
+    }
+    &:before {
+      left: 20px;
+      border-width: 10px;
+      border-bottom-color: #ccc;
+    }
+    &:after {
+      left: 21px;
+      border-width: 9px;
+      border-bottom-color: $bg-color;
+    }
+
+    .list-header {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      .guess {
+        margin-right: 15px;
+      }
+      .city-name {
+        margin-right: 15px;
+        padding: 5px 10px;
+        background: $primary-color-base;
+      }
+      .city-input {
+        height: 30px;
+        border-left: 2px solid #ccc;
+        padding-left: 15px;
+        input {
+          height: 30px;
+          padding: 0 5px;
+        }
+      }
+    }
+    hr {
+      border: 1px solid #ccc;
+    }
+    .list-body {
+      padding: 15px 0;
+      .row {
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+        .index-alpha {
+          padding-right: 40px;
+        }
+        .list {
+          display: flex;
+          flex-wrap: wrap;
+          .item {
+            width: 90px;
+            margin: 0 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+}

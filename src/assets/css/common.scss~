@@ -1,0 +1,123 @@
+//common.scss通用的css样式
+
+@import "base";
+
+body {
+  font: {
+    family: $font-family;
+    weight: normal;
+    size: 14px;
+  }
+  background-color: $bg-color;
+  color: $text-color;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  
+  .rel-div {
+    position: relative;
+  }
+
+  .container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .main-container {
+    width: 1200px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  a {
+    display: block;
+    cursor: pointer;
+    background-color: transparent;
+    transition: all 0.4s ease-in-out;
+    color: $accent-color;
+    opacity: 0.7;
+    &:hover {
+      color: $accent-color;
+      opacity: 1;
+    }
+  }
+  
+  .button-dashed {
+    color: $secondary-text-color;
+    padding: 0 5px;           
+    background-color: $bg-color;
+    border: 1px dashed #000000;
+    border-radius: 2px;
+    &:hover {
+      background-color: $accent-color;
+      border-color: white;
+      color: white;
+    }
+  }
+
+  ul {
+    list-style: none;
+  }
+  .border-flag {
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    margin: 0 5px;
+  }
+  .hidden {
+    display: none;
+  }
+  .show {
+    display: block;
+  }
+  .flex-box {
+    display: flex;
+  }
+  .space-between {
+    justify-content: space-between;
+  }
+  input:focus {
+    outline: none;
+  }
+}
+//layout
+.flex {
+  display: flex;
+}
+.v-middle {
+  align-items: center;
+}
+.v-top {
+  align-items: flex-start;
+}
+.v-bottom {
+  align-items: flex-end;
+}
+.h-middle {
+  justify-content: center;
+}
+.h-left {
+  justify-content: flex-start;
+}
+.h-right {
+  justify-content: flex-end;
+}
+.h-between {
+  justify-content: space-between;
+}
+.h-around {
+  justify-content: space-around;
+}
+.wrap {
+  flex-wrap: wrap;
+}
+.inline {
+  display: inline;
+} 
+
