@@ -6,7 +6,8 @@ import {
   LOGIN,
   LOGOUT,
   UPDATE_USERINFO,
-  USERINFO
+  USERINFO,
+  UPDATE_LOCATIONINFO
 } from "@/store/motationTypes";
 //载入i-view Message组件
 import { Message } from "view-design";
@@ -16,7 +17,9 @@ const state = {
   //登录鉴权凭据
   token: Cookie.get("login_status") || null,
   //用户信息
-  userInfo: null
+  userInfo: null,
+  //用户所在城市信息
+  locationInfo: null
 };
 
 //用户模块mutations
@@ -34,6 +37,10 @@ const mutations = {
   //更新用户信息
   [UPDATE_USERINFO](state, userInfo) {
     state.userInfo = userInfo;
+  },
+  //更新用户位置信息
+  [UPDATE_LOCATIONINFO](state, locationInfo) {
+    state.locationInfo = locationInfo;
   }
 };
 

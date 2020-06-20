@@ -23,6 +23,11 @@ const USER_API = {
   getCategory: {
     method: "get",
     url: "/api/common/getCategory"
+  },
+  //获取城市列表信息
+  getCityList: {
+    method: "get",
+    url: "/api/common/getCityList"
   }
 };
 export default USER_API;

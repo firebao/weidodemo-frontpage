@@ -47,6 +47,10 @@ export default {
 .svg-icon {
   overflow: hidden;
 }
+.i90 {
+  width: 90px;
+  height: 90px;
+}
 .i40 {
   width: 40px;
   height: 40px;

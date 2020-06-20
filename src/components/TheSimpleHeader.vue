@@ -7,11 +7,13 @@
     <div class="hint">
       <p class="flex v-middle" v-if="type === 'register'">
         已有账号?
-        <router-link to="/login" class="button-dashed">登录</router-link>
+        <router-link to="/user/login" class="button-dashed">登录</router-link>
       </p>
       <p class="flex v-middle" v-else-if="type === 'loginPass'">
         没有账号?
-        <router-link to="/register" class="button-dashed">注册</router-link>
+        <router-link to="/user/register" class="button-dashed">
+          注册
+        </router-link>
       </p>
       <p class="flex v-middle" v-else-if="type === 'loginCaptcha'">
         提示：未注册围兜账号的手机号，登录时将自动注册围兜账号

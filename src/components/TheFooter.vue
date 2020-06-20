@@ -71,7 +71,7 @@ export default {
 <style scoped lang="scss">
 footer {
   width: 100%;
-  background-color: #e4e4e4;
+  background-color: #f6f6f6;
   height: 340px;
   padding: 30px 0;
   .footer-head {

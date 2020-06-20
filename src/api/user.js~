@@ -1,4 +1,0 @@
-import request from "@/utils/request";
-export function sendCmsCode(data) {
-  return request.post("/user/sendCmsCode", data, { login: false });
-}

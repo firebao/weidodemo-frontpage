@@ -124,12 +124,22 @@ app.get("/api/common/getCategory", (req, res) => {
     "data": function() {
       let data = fs.readFileSync(path.resolve(__dirname, "./data/category.json"));
       let obj = JSON.parse(data);
-      console.log(obj);
       return obj;
     },
     "message": "获取Category信息成功"
   });
-  console.log(data);
+  res.json(data);
+});
+app.get("/api/common/getCityList", (req, res) => {
+  let data = Mock.mock({
+    "status": "success",
+    "data": function() {
+      let data = fs.readFileSync(path.resolve(__dirname, "./data/citys.json"))
+      let obj = JSON.parse(data);
+      return obj;
+    },
+    "message": "获取城市列表成功"
+  });
   res.json(data);
 });
 let server = app.listen(8081, function(){

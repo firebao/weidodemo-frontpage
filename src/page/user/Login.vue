@@ -1,0 +1,219 @@
+<template>
+  <div>
+    <simple-header title="用户登录" :type="loginType"></simple-header>
+    <main>
+      <div class="main-container">
+        <div class="login-container">
+          <transition
+            enter-active-class="animated fadeInRight"
+            leave-active-class="animated fadeOutLeft"
+            mode="out-in"
+          >
+            <!-- login with captcha -->
+            <base-form
+              ref="loginCaptcha"
+              v-if="loginType === 'loginCaptcha'"
+              key="l-c"
+            >
+              <template v-slot:handler>
+                <a class="button-dashed" @click="loginPass">
+                  切换为手机+密码登录
+                </a>
+              </template>
+              <input-group
+                key="c-m"
+                v-model="mobile"
+                prop="mobile"
+                icon="mobile"
+                label="手机号码"
+                placeHolder="输入您的手机号码"
+                name="mobile"
+                id="mobile"
+                type="tel"
+              >
+              </input-group>
+              <input-group
+                key="c-c"
+                v-model="captcha"
+                prop="captcha"
+                icon="captcha"
+                label="动态验证码"
+                placeHolder="手机动态验证码"
+                name="captcha"
+                id="captcha"
+                type="text"
+              >
+                <template v-slot:default="slotProps">
+                  <a
+                    class="button-captcha"
+                    :disabled="!mobileState"
+                    :class="slotProps.flag ? 'move-left' : ''"
+                    @click="handleSendCode"
+                  >
+                    获取验证码
+                  </a>
+                </template>
+              </input-group>
+              <button type="submit" @click.prevent="doLogin">登录</button>
+              <p class="tips">
+                提示：未注册围兜账号的手机号，登录时将自动注册围兜账号，且代表您同意
+                <router-link class="inline" to="/user-agreement">
+                  《围兜网用户协议》
+                </router-link>
+              </p>
+              <div class="third-login flex v-middle h-between">
+                <span>第三方登录</span>
+                <span class="flex" @click="handleOauthLogin('qq')">
+                  <icon-svg class="i20" icon-class="qq"></icon-svg>
+                </span>
+                <span class="flex" @click="handleOauthLogin('weixin')">
+                  <icon-svg class="i20" icon-class="weixin"></icon-svg>
+                </span>
+                <span class="flex" @click="handleOauthLogin('weibo')">
+                  <icon-svg class="i20" icon-class="weibo"></icon-svg>
+                </span>
+              </div>
+              <!-- befor send code the slide verify need to do -->
+              <base-dialog
+                v-model="dialogShow"
+                :closable="false"
+                title="请向右拖动滑块完成验证"
+                :footerHide="true"
+                width="450"
+              >
+                <div class="flex h-middle">
+                  <slide-verification
+                    v-model="verifyFlag"
+                    @verify-ok="handleVerifyOk"
+                  >
+                  </slide-verification>
+                </div>
+              </base-dialog>
+              <!-- end -->
+            </base-form>
+            <!-- end login with captcha -->
+            <!-- login with password -->
+            <base-form
+              ref="loginPass"
+              method="post"
+              v-if="loginType === 'loginPass'"
+              key="l-p"
+            >
+              <template v-slot:handler :value="dialogShow">
+                <a class="button-dashed" @click="loginCaptcha">
+                  切换为手机+验证码登录
+                </a>
+              </template>
+              <input-group
+                key="p-m"
+                v-model="mobile"
+                prop="mobile"
+                icon="mobile"
+                label="手机号码"
+                placeHolder="输入您的手机号码"
+                name="mobile"
+                id="mobile"
+                type="tel"
+              >
+              </input-group>
+              <input-group
+                key="p-p"
+                v-model="password"
+                prop="password"
+                icon="password"
+                label="密码"
+                placeHolder="8-16位注册密码"
+                name="password"
+                id="password"
+                type="password"
+              >
+              </input-group>
+              <div class="about-password flex h-between">
+                <i-checkbox>&nbsp;记住密码</i-checkbox>
+                <router-link to="/forgetPass">忘记密码</router-link>
+              </div>
+              <button type="submit" @click.prevent="doLogin">登录</button>
+              <div class="third-login flex h-between v-middle">
+                <span>第三方登录</span>
+                <span class="flex">
+                  <icon-svg class="i20" icon-class="qq"></icon-svg>
+                </span>
+                <span class="flex">
+                  <icon-svg class="i20" icon-class="weixin"></icon-svg>
+                </span>
+                <span class="flex">
+                  <icon-svg class="i20" icon-class="weibo"></icon-svg>
+                </span>
+              </div>
+            </base-form>
+          </transition>
+          <base-dialog
+            v-model="oauthShowOrHide"
+            :title="oauthLoginObject.title"
+            width="1000"
+          >
+            <iframe
+              class="oauthLoginFrame"
+              :id="oauthLoginObject.id"
+              :src="oauthLoginObject.url"
+            ></iframe>
+          </base-dialog>
+        </div>
+      </div>
+    </main>
+  </div>
+</template>
+<script src="@/page/js/login.js"></script>
+<style scoped lang="scss">
+@import "@/assets/css/base.scss";
+div {
+  main {
+    height: 100%;
+
+    .login-container,
+    .register-container {
+      padding: 10px;
+      width: 320px;
+      margin: 150px auto 0;
+
+      .about-password {
+        margin-top: 10px;
+      }
+
+      button {
+        width: 100%;
+        margin-top: 30px;
+        height: 40px;
+        color: white;
+        background-color: #199ed8;
+        opacity: 0.7;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+      }
+
+      p.tips {
+        margin-top: 10px;
+        font-size: 12px;
+        color: $secondary-text-color;
+      }
+
+      .third-login {
+        margin-top: 40px;
+        .flex {
+          cursor: pointer;
+        }
+      }
+      .oauthLoginFrame {
+        height: 600px;
+        width: 100%;
+        border: none;
+        //overwrite qq authorization page style
+        .float_left {
+          float: none;
+        }
+      }
+    }
+  }
+}
+</style>

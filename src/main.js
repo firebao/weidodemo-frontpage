@@ -25,7 +25,6 @@ import VueInfiniteScroll from "vue-infinite-scroll";
 import "normalize.css";
 //载入common.scss
 import "@/assets/css/common.scss";
-
 //Vue全局配置
 //阻止vue在启动时生成生产提示
 Vue.config.productionTip = false;
@@ -42,7 +41,6 @@ Vue.use(Animated);
 Vue.use(VueLazyLoad);
 //安装vue-infinite-scroll
 Vue.use(VueInfiniteScroll);
-
 //将async-validator的实例注册为vue的原型属性$validator
 Vue.prototype.$validator = function(rule) {
   return new Schema(rule);

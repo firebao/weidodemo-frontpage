@@ -1,8 +1,0 @@
-import SimpleHeader from "@/components/TheSimpleHeaser";
-
-export default {
-  name: "Register",
-  components: {
-    SimpleHeader
-  }
-};
