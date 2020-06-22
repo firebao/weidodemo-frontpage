@@ -1,5 +1,17 @@
+<!--
+#***********************************************
+#
+#      Filename: src/page/user/Tastes.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: xxx
+#        Create: 2020-06-22 17:17:02
+# Last Modified: 2020-06-22 17:17:02
+#***********************************************
+-->
 <template>
   <div class="tastes">
+    <!-- 新增角色 -->
     <div class="add-role">
       <div class="item">
         <div class="add flex h-middle v-middle">
@@ -10,6 +22,8 @@
         </div>
       </div>
     </div>
+    <!-- end新增角色 -->
+    <!-- 角色信息 -->
     <div class="role-info">
       <div class="name">
         <div class="label">姓名</div>
@@ -31,12 +45,25 @@
         <input id="weight" type="text" />
       </div>
     </div>
+    <!-- end角色信息 -->
+    <!-- 角色口味 -->
     <div class="role-tastes">
       <tabs type="simple" size="default">
-        <tab-pane label="标签1">标签1</tab-pane>
-        <tab-pane label="标签1">标签2</tab-pane>
+        <!-- 味觉偏好 -->
+        <tab-pane label="味觉偏好">
+          <div class="flex h-around">
+            <div class="taste">酸</div>
+            <div class="taste">甜</div>
+            <div class="taste">苦</div>
+            <div class="taste">辣</div>
+            <div class="taste">咸</div>
+          </div>
+        </tab-pane>
+        <!-- end味觉偏好 -->
+        <tab-pane label="菜系偏好">菜系偏好</tab-pane>
       </tabs>
     </div>
+    <!-- end角色口味 -->
   </div>
 </template>
 <script>
@@ -57,6 +84,7 @@ export default {
 @import "@/assets/css/base.scss";
 .tastes {
   padding: 20px;
+  //新增角色
   .add-role {
     width: 100%;
     padding: 20px;
@@ -75,6 +103,7 @@ export default {
       }
     }
   }
+  //角色信息
   .role-info {
     margin-top: 30px;
     padding: 20px;
@@ -103,21 +132,15 @@ export default {
       margin-right: 15px;
     }
   }
+  //角色口味
   .role-tastes {
     margin-top: 30px;
     padding: 20px;
     border: 2px solid #ccc;
-    .tab-pane {
-      display: inline-flex;
-      .tab-item {
-        padding: 10px 20px;
-        cursor: pointer;
-        color: $secondary-text-color;
-        font-weight: 600;
-        &:hover {
-          color: $accent-color;
-        }
-      }
+    .taste {
+      height: 200px;
+      padding: 20px;
+      border: 1px solid #ccc;
     }
   }
 }

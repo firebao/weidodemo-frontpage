@@ -1,21 +1,25 @@
 <!--
 #***********************************************
 #
-#      Filename: vue-demo/src/components/tab/tabs.vue
+#      Filename: src/components/tab/tabs.vue
 #
 #        Author: wwj - 318348750@qq.com
-#   Description: ---
-#        Create: 2020-06-11 10:11:29
-# Last Modified: 2020-06-11 10:11:29
+#   Description: xxx
+#        Create: 2020-06-20 11:17:20
+# Last Modified: 2020-06-20 11:17:20
 #***********************************************
 -->
--->
 <template>
+  <!-- 标签页 -->
   <div :class="classes">
+    <!-- 选项卡 -->
     <div :class="[prefixCls + '-bar']">
+      <!-- 选项卡右侧extra插槽 -->
       <div :class="[prefixCls + '-nav-right']" v-if="showSlot">
         <slot name="extra"></slot>
       </div>
+      <!-- end选项卡右侧extra插槽 -->
+      <!-- 选项卡容器 -->
       <div
         :class="[prefixCls + '-nav-container']"
         tabindex="0"
@@ -23,6 +27,7 @@
         @keydown="handleTabKeyNavigation"
         @keydown.space.prevent="handleTabKeyborderSelect(false)"
       >
+        <!-- 选项卡wrap -->
         <div
           ref="navWrap"
           :class="[
@@ -30,6 +35,7 @@
             scrollable ? prefixCls + '-nav-scrollable' : ''
           ]"
         >
+          <!-- 向前滚动 -->
           <span
             :class="[
               prefixCls + '-nav-prev',
@@ -39,6 +45,8 @@
           >
             <icon-svg iconClass="three-left" class="i20"></icon-svg>
           </span>
+          <!-- end向前滚动 -->
+          <!-- 向后滚动 -->
           <span
             :class="[
               prefixCls + '-nav-next',
@@ -48,6 +56,8 @@
           >
             <icon-svg iconClass="three-right" class="i20"></icon-svg>
           </span>
+          <!-- end向后滚动 -->
+          <!-- 滚动区域 -->
           <div
             ref="navScroll"
             :class="[prefixCls + '-nav-scroll']"
@@ -55,7 +65,10 @@
             @mousewheel="handleScroll"
           >
             <div ref="nav" :class="[prefixCls + '-nav']" :style="navStyle">
+              <!-- 用于指示选项卡激活的横线 -->
               <div :class="barClasses" :style="barStyle"></div>
+              <!-- end用于指示选项卡激活的横线 -->
+              <!-- 选项卡 -->
               <div
                 :class="tabCls(item)"
                 v-for="(item, index) in navList"
@@ -78,15 +91,23 @@
                   @click.native.stop="handleRemove(index)"
                 ></icon-svg>
               </div>
+              <!-- end选项卡 -->
             </div>
           </div>
+          <!-- end滚动区域 -->
         </div>
+        <!-- end选项卡wrap -->
       </div>
+      <!-- end选项卡容器 -->
     </div>
+    <!-- end选项卡 -->
+    <!-- 标签页内容插槽 -->
     <div ref="panes" :style="contentStyle" :class="contentClasses">
       <slot></slot>
     </div>
+    <!-- end标签页内容插槽 -->
   </div>
+  <!-- end标签页 -->
 </template>
 <script>
 import { findComponentsDownward } from "@/utils/assist.js";
@@ -95,18 +116,30 @@ import elementResizeDetectorMaker from "element-resize-detector";
 
 const transitionTime = 300;
 const prefixCls = "wd-tabs";
-//获取下一个标签
-const getNextTab = (list, activeKey, direction, countDisabledAlso) => {
+
+/**
+ * @desc: 获取下一个标签,如果下一个标签为disabled，跳过此标签
+ * @param: {array} list 标签列表
+ * @param: {string} activeKey 激活标签名称
+ * @param: {number} direction 获取的标签方向 -1代表前一个,1代表后一个
+ * @return: {object} 标签（选项卡）element
+ */
+const getNextTab = (list, activeKey, direction) => {
   const currentIndex = list.findIndex(tab => tab.name === activeKey);
   const nextIndex = (currentIndex + direction + list.length) % list.length;
   const nextTab = list[nextIndex];
   if (nextTab.disabled) {
-    return getNextTab(list, nextTab.name, direction, countDisabledAlso);
+    return getNextTab(list, nextTab.name, direction);
   } else {
     return nextTab;
   }
 };
-//获取页面
+/**
+ * @desc: 使元素获得焦点，element==root element的第一个子元素获得焦点
+ * @param: {object} element 要获得焦点元素的元素
+ * @param: {object} root 要获得焦点的元素的根元素
+ * @return: {boolean} true成功|false失败
+ */
 const focusFirst = (element, root) => {
   try {
     element.focus();
@@ -122,6 +155,7 @@ const focusFirst = (element, root) => {
   }
   return false;
 };
+
 export default {
   name: "Tabs",
   components: {
@@ -154,7 +188,7 @@ export default {
       type: Boolean,
       default: true
     },
-    //捕获焦点
+    //Tabs内的表单控件是否自动获得焦点捕获焦点
     captureFocus: {
       type: Boolean,
       default: false
@@ -177,7 +211,9 @@ export default {
       prefixCls: prefixCls,
       //标签列表
       navList: [],
+      //bar宽度
       barWidth: 0,
+      //bar偏移量
       barOffset: 0,
       //激活的标签
       activeKey: this.value,
@@ -191,6 +227,7 @@ export default {
       },
       //标签是否可滚动
       scrollable: false,
+      //标志位，是否正在更换选项卡
       transitioning: false
     };
   },
@@ -258,7 +295,7 @@ export default {
       };
       if (this.type === "simple") style.visibility = "visible";
       if (this.animated) {
-        style.transform = `translated3d(${this.barOffset}px, 0px, 0px)`;
+        style.transform = `translate3d(${this.barOffset}px, 0px, 0px)`;
       } else {
         style.left = `${this.barOffset}px`;
       }
@@ -313,7 +350,10 @@ export default {
         }
       });
     },
-    //更新Bar
+    /**
+     * @desc: 刷新Bar（用于显示选项卡激活状态的横线）
+     * @returns: void
+     */
     updateBar() {
       this.$nextTick(() => {
         const index = this.getTabIndex(this.activeKey);
@@ -342,7 +382,11 @@ export default {
         tab => (tab.show = tab.currentName === this.activeKey || this.animated)
       );
     },
-    //标签点击事件
+    /**
+     * @desc: 选择选项卡
+     * @param: {number} index 选项卡index
+     * @return: void
+     */
     handleChange(index) {
       if (this.transitioning) return;
       this.transitioning = true;
@@ -353,14 +397,22 @@ export default {
       this.$emit("input", nav.name);
       this.$emit("on-click", nav.name);
     },
-    //Tab键盘左右按键事件
+    /**
+     * @desc: 选项卡容器键盘事件,左右方向键会改变当前选项卡的焦点
+     * @param: {object event} e 事件对象
+     * @return: void
+     */
     handleTabKeyNavigation(e) {
       if (e.keyCode !== 37 && e.keyCode !== 39) return;
       const direction = e.keyCode === 39 ? 1 : -1;
       const nextTab = getNextTab(this.navList, this.focusedKey, direction);
       this.focusedKey = nextTab.name;
     },
-    //Tab键盘空格按键事件
+    /**
+     * @desc: 选项卡容器空格按键按下的键盘事件
+     * @param: {boolean} [init=false] 初始化标志 ture不进行操作
+     * @return: void
+     */
     handleTabKeyboardSelect(init = false) {
       if (init) return;
       const focused = this.focusedKey || 0;
@@ -434,18 +486,29 @@ export default {
           : navWidth - containerWidth;
       this.setOffset(newOffset);
     },
-    //获取当前标签栏的偏移量
+    /**
+     * @desc: 获取当前nav的偏移量
+     * @return: {number}
+     */
     getCurrentScrollOffset() {
       const { navStyle } = this;
       return navStyle.transform
         ? Number(navStyle.transform.match(/translateX\(-(\d+(\.\d+)*)px\)/)[1])
         : 0;
     },
-    //获取当前激活标签的index
+    /**
+     * @desc: 通过选项卡的名称返回index
+     * @param: {string} name 选项卡名称
+     * @return: {number} -1表示没有找到name对应的选项卡
+     */
     getTabIndex(name) {
       return this.navList.findIndex(nav => nav.name === name);
     },
-    //设置标签滚动的偏移量
+    /**
+     * @desc: 设置nav的偏移量
+     * @param: {number} value nav的偏移量
+     * @return: void
+     */
     setOffset(value) {
       this.navStyle.transform = `translateX(-${value}px)`;
     },
@@ -492,10 +555,13 @@ export default {
         this.setOffset(Math.max(newOffset, 0));
       }
     },
-    //更新标签滚动
+    /**
+     * @desc: 刷新navScroll元素
+     * @return: void
+     */
     updateNavScroll() {
-      const navWidth = this.$refs.nav.offsetWideth;
-      const containerWidth = this.$refs.navScroll.offsetWideth;
+      const navWidth = this.$refs.nav.offsetWidth;
+      const containerWidth = this.$refs.navScroll.offsetWidth;
       const currentOffset = this.getCurrentScrollOffset();
 
       if (containerWidth < navWidth) {
@@ -525,11 +591,17 @@ export default {
         this.scrollNext();
       }
     },
-    //resize事件
+    /**
+     * @desc: 监听器element-resize-detector监听navWrap元素大小变化后的回调
+     * @return: void
+     */
     handleResize() {
       this.updateNavScroll();
     },
-    //是否是影藏元素
+    /**
+     * @desc: 判断本组件是否是影藏节点的子节点
+     * @return: {boolean|object} false 不是影藏节点的子节点|object Element影藏节点DOM
+     */
     isInsideHiddenElement() {
       let parentNode = this.$el.parentNode;
       while (parentNode && parentNode !== document.body) {
@@ -540,14 +612,18 @@ export default {
       }
       return false;
     },
-    //更新可见性
+    /**
+     * @desc: 更新tabpane插槽的内容
+     * @param: {number} index 选项卡的序列
+     * @return: void
+     */
     updateVisibility(index) {
       [...this.$refs.panes.querySelectorAll(`.${prefixCls}-tabpane`)].forEach(
         (el, i) => {
           if (index === i) {
             [...el.children]
               .filter(child => child.classList.contains(`${prefixCls}-tabpane`))
-              .forEach(child => (child.style.visibility = "visibel"));
+              .forEach(child => (child.style.visibility = "visible"));
             if (this.captureFocus) {
               setTimeout(() => focusFirst(el, el), transitionTime);
             }
@@ -583,7 +659,12 @@ export default {
     }
   },
   mounted() {
-    debugger;
+    /*当vue实例被挂载
+     *1.根据extra插槽有没有内容，配置插槽是否渲染
+     *2.配置监听navwrap元素的大小变化,navwrap的大小变化会影响navscroll元素
+     *3.本组件的父节点是影藏元素，监听影藏节点的显影变化，刷新Bar
+     *4.更新tabpane内容
+     */
     this.showSlot = this.$slots.extra !== undefined;
     this.observer = elementResizeDetectorMaker();
     this.observer.listenTo(this.$refs.navWrap, this.handleResize);
@@ -602,7 +683,6 @@ export default {
         attributeFilter: ["style"]
       });
     }
-    this.handleTabKeyboardSelect(true);
     this.updateVisibility(this.getTabIndex(this.activeKey));
   },
   beforeDestroy() {
@@ -625,6 +705,7 @@ export default {
       margin-left: 5px;
     }
     .wd-tabs-nav-container {
+      outline: none; //必须有outline否则会出现默认的黑框
       margin-bottom: -1px;
       line-height: 1.5;
       font-size: 14px;
@@ -683,6 +764,19 @@ export default {
           }
         }
       }
+    }
+  }
+  .wd-tabs-content {
+    display: flex;
+    flex-direction: row;
+    will-change: transform;
+    transition: transform 0.3s ease-in-out;
+    .wd-tab-pane {
+      flex-shrink: 0;
+      width: 100%;
+      transition: opacity 0.3s;
+      opacity: 1;
+      outline: 0;
     }
   }
 }
