@@ -34,6 +34,11 @@ export default [
       {
         path: "address",
         component: () => import("@/page/user/Address")
+      },
+      //邮件订阅
+      {
+        path: "subscription",
+        component: () => import("@/page/user/Subscription")
       }
     ]
   },
