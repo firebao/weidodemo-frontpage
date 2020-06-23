@@ -25,9 +25,15 @@ export default [
         path: "account-security",
         component: () => import("@/page/user/AccountSecurity")
       },
+      //我的口味
       {
         path: "tastes",
         component: () => import("@/page/user/Tastes")
+      },
+      //我的地址
+      {
+        path: "address",
+        component: () => import("@/page/user/Address")
       }
     ]
   },

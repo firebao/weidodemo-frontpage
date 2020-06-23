@@ -165,7 +165,7 @@ export default {
     return { TabsInstance: this };
   },
   props: {
-    //当前激活标签的name
+    //当前激活标签的name或者index
     value: {
       type: [String, Number]
     },
@@ -209,7 +209,7 @@ export default {
     return {
       //类前缀
       prefixCls: prefixCls,
-      //标签列表
+      //标签(选项表)列表
       navList: [],
       //bar宽度
       barWidth: 0,
@@ -232,7 +232,7 @@ export default {
     };
   },
   computed: {
-    //标签类属性
+    //标签页类属性
     classes() {
       return [
         `${prefixCls}`,
@@ -244,7 +244,7 @@ export default {
         }
       ];
     },
-    //标签内容的类属性
+    //标签页内容插槽的类属性
     contentClasses() {
       return [
         `${prefixCls}-content`,
@@ -253,7 +253,7 @@ export default {
         }
       ];
     },
-    //标签内容的样式属性
+    //标签页内容插槽的样式属性
     contentStyle() {
       const x = this.getTabIndex(this.activeKey);
       const p = x === 0 ? "0%" : `-${x}00%`;
@@ -278,7 +278,7 @@ export default {
         ];
       };
     },
-    //激活的标签下的横线的类属性
+    //激活的标签下的横线bar的类属性
     barClasses() {
       return [
         `${prefixCls}-ink-bar`,
@@ -287,7 +287,7 @@ export default {
         }
       ];
     },
-    //激活的标签下的横线的样式
+    //激活的标签下的横线bar的样式属性
     barStyle() {
       let style = {
         visibility: "hidden",
@@ -303,7 +303,10 @@ export default {
     }
   },
   methods: {
-    //获取所有标签项(TabPane)Components的列表
+    /**
+     * @desc: 获取所有标签项(TabPane)Components的列表
+     * @return: {array} 标签项列表
+     */
     getTabs() {
       const AllTabPanes = findComponentsDownward(this, "TabPane");
       const TabPanes = [];
@@ -326,7 +329,10 @@ export default {
       });
       return TabPanes;
     },
-    //更新标签列表
+    /**
+     * @desc: 更新标签列表
+     * @return: void
+     */
     updateNav() {
       this.navList = [];
       this.getTabs().forEach((pane, index) => {
@@ -339,7 +345,9 @@ export default {
           icon: pane.icon || "",
           //用于标识当前面板，对应value，默认为其索引值
           name: pane.currentName || index,
+          //该标签是否禁用
           disabled: pane.disabled,
+          //该标签是否可关闭
           closable: pane.closable
         });
         //标签没有props name属性，索引值代替
@@ -375,7 +383,10 @@ export default {
         this.updateNavScroll();
       });
     },
-    //更新标签激活状态
+    /**
+     * @desc: 更新标签激活状态
+     * @return: void
+     */
     updateStatus() {
       const tabs = this.getTabs();
       tabs.forEach(
@@ -419,7 +430,11 @@ export default {
       const index = this.getTabIndex(focused);
       this.handleChange(index);
     },
-    //移除按钮点击事件
+    /**
+     * @desc: 关闭选项卡
+     * @param: {number} index 选项卡index
+     * @return: void
+     */
     handleRemove(index) {
       if (!this.beforeRemove) {
         return this.handleRemoveTab(index);
@@ -433,7 +448,11 @@ export default {
         this.handleRemoveTab(index);
       }
     },
-    //移除标签
+    /**
+     * @desc: 关闭选项卡handle
+     * @param: {number} index 选项卡index
+     * @return: void
+     */
     handleRemoveTab(index) {
       const tabs = this.getTabs();
       const tab = tabs[index];
@@ -465,7 +484,10 @@ export default {
       this.$emit("on-tab-remove", tab.currentName);
       this.updateNav();
     },
-    //标签栏向前滚动
+    /**
+     * @desc: 标签栏向前滚动
+     * @return: void
+     */
     scrollPrev() {
       const containerWidth = this.$refs.naScroll.offsetWidth;
       const currentOffset = this.getCurrentScrollOffset();
@@ -475,6 +497,10 @@ export default {
       this.setOffset(newOffset);
     },
     //标签栏向后滚动
+    /**
+     * @desc: 标签栏向后滚动
+     * @return: void
+     */
     scrollNext() {
       const navWidth = this.$refs.nav.offsetWidth;
       const containerWidth = this.$refs.navScroll.offsetWidth;
@@ -512,7 +538,11 @@ export default {
     setOffset(value) {
       this.navStyle.transform = `translateX(-${value}px)`;
     },
-    //是否显示标签上的关闭按钮
+    /**
+     * @desc: 判断是否显示选项卡上的关闭按钮
+     * @param: {object} item 选项卡
+     * @return: {boolean} true：显示|false：不显示
+     */
     showClose(item) {
       //只有在卡片式标签上才能有关闭按钮
       if (this.type === "card") {
@@ -525,7 +555,10 @@ export default {
         return false;
       }
     },
-    //滚动到激活的标签
+    /**
+     * @desc: 滚动到当前激活的标签
+     * @return: void
+     */
     scrollToActiveTab() {
       if (!this.scrollable) return;
       const nav = this.$refs.nav;
@@ -576,7 +609,11 @@ export default {
         }
       }
     },
-    //滚动事件
+    /**
+     * @desc: 滚动事件
+     * @param: {object} e event事件
+     * @return: void
+     */
     handleScroll(e) {
       e.preventDefault();
       e.stopPropagation();

@@ -28,7 +28,7 @@ export default {
             { title: "个人信息", url: "/user/userinfo" },
             { title: "账号安全", url: "/user/account-security" },
             { title: "我的口味", url: "/user/tastes" },
-            { title: "地址管理", url: "/user/userinfo" },
+            { title: "地址管理", url: "/user/address" },
             { title: "邮件订阅", url: "/user/userinfo" },
             { title: "账号绑定", url: "/user/userinfo" },
             { title: "分享绑定", url: "/user/userinfo" },
