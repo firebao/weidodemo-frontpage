@@ -30,8 +30,8 @@ export default {
             { title: "我的口味", url: "/user/tastes" },
             { title: "地址管理", url: "/user/address" },
             { title: "邮件订阅", url: "/user/subscription" },
-            { title: "账号绑定", url: "/user/userinfo" },
-            { title: "分享绑定", url: "/user/userinfo" },
+            { title: "账号绑定", url: "/user/bind" },
+            { title: "分享绑定", url: "/user/share" },
             { title: "营业档案", url: "/user/userinfo" },
             { title: "企业发票", url: "/user/userinfo" }
           ]

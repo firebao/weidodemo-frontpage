@@ -39,6 +39,16 @@ export default [
       {
         path: "subscription",
         component: () => import("@/page/user/Subscription")
+      },
+      //账号绑定
+      {
+        path: "bind",
+        component: () => import("@/page/user/Bind")
+      },
+      //分享绑定
+      {
+        path: "share",
+        component: () => import("@/page/user/Share")
       }
     ]
   },
