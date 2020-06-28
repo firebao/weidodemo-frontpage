@@ -1,3 +1,14 @@
+<!--
+#***********************************************
+#
+#      Filename: Index.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: 用户中心首页
+#        Create: 2020-06-23 10:42:37
+# Last Modified: 2020-06-23 10:42:37
+#***********************************************
+-->
 <template>
   <div class="index">
     <div class="info flex">

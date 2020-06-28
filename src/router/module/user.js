@@ -49,6 +49,21 @@ export default [
       {
         path: "share",
         component: () => import("@/page/user/Share")
+      },
+      //营养档案
+      {
+        path: "record",
+        component: () => import("@/page/user/Record")
+      },
+      //企业发票
+      {
+        path: "invoice",
+        component: () => import("@/page/user/Invoice")
+      },
+      //我的订单
+      {
+        path: "order",
+        component: () => import("@/page/user/Order")
       }
     ]
   },
