@@ -64,6 +64,26 @@ export default [
       {
         path: "order",
         component: () => import("@/page/user/Order")
+      },
+      //评价晒单
+      {
+        path: "appraise",
+        component: () => import("@/page/user/Appraise")
+      },
+      //我的红包
+      {
+        path: "redpackets",
+        component: () => import("@/page/user/Redpackets")
+      },
+      //我的金币
+      {
+        path: "coin",
+        component: () => import("@/page/user/Coin")
+      },
+      //我的积分
+      {
+        path: "points",
+        component: () => import("@/page/user/Points")
       }
     ]
   },

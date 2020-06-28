@@ -40,15 +40,15 @@ export default {
           title: "我的订单",
           subnav: [
             { title: "我的订单", url: "/user/order" },
-            { title: "评价晒单", url: "/user/userinfo" }
+            { title: "评价晒单", url: "/user/appraise" }
           ]
         },
         {
           title: "我的资产",
           subnav: [
-            { title: "我的红包", url: "/user/userinfo" },
-            { title: "我的金币", url: "/user/userinfo" },
-            { title: "我的积分", url: "/user/userinfo" },
+            { title: "我的红包", url: "/user/redpackets" },
+            { title: "我的金币", url: "/user/coin" },
+            { title: "我的积分", url: "/user/points" },
             { title: "我的优惠券", url: "/user/userinfo" }
           ]
         },
