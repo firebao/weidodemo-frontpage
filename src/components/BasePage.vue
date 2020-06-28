@@ -1,3 +1,14 @@
+<!--
+#***********************************************
+#
+#      Filename: /root/vue-demo/src/components/BasePage.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: BasePage分页组件
+#        Create: 2020-06-28 16:59:23
+# Last Modified: 2020-06-28 16:59:23
+#***********************************************
+-->
 <template>
   <!-- 普通版分页 -->
   <ul :class="simpleWrapClasses" :style="styles" v-if="mode === 'simple'">

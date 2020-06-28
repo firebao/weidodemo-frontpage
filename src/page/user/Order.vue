@@ -12,18 +12,10 @@
 <template>
   <div class="order">
     <tabs type="simple" size="default">
-      <tab-pane label="全部订单">
-        111
-      </tab-pane>
-      <tab-pane label="待付款">
-        222
-      </tab-pane>
-      <tab-pane label="待收货">
-        333
-      </tab-pane>
-      <tab-pane label="待评价">
-        444
-      </tab-pane>
+      <tab-pane label="全部订单"></tab-pane>
+      <tab-pane label="待付款"></tab-pane>
+      <tab-pane label="待收货"></tab-pane>
+      <tab-pane label="待评价"></tab-pane>
       <div class="extra" slot="extra">
         <div class="middle">
           <span>常购商品</span>
@@ -34,12 +26,35 @@
         </div>
       </div>
     </tabs>
+    <!-- 订单列表 -->
+    <div class="list-table">
+      <div class="list-header">
+        <div>近三月订单</div>
+        <div>订单详情</div>
+        <div>收货人</div>
+        <div>金额</div>
+        <div>全部状态</div>
+        <div>操作</div>
+      </div>
+      <div class="list-body">
+        <order-item></order-item>
+        <order-item></order-item>
+        <order-item></order-item>
+        <order-item></order-item>
+      </div>
+      <div class="list-footer">
+        <base-page :total="100" mode="scroll"></base-page>
+      </div>
+    </div>
+    <!-- end 订单列表 -->
   </div>
 </template>
 <script>
 import Tabs from "@/components/tab";
 import TabPane from "@/components/tab/pane";
 import BaseInput from "@/components/BaseInput";
+import OrderItem from "@/components/OrderItem";
+import BasePage from "@/components/BasePage";
 export default {
   name: "Order",
   data() {
@@ -48,7 +63,9 @@ export default {
   components: {
     Tabs,
     TabPane,
-    BaseInput
+    BaseInput,
+    OrderItem,
+    BasePage
   }
 };
 </script>
@@ -68,6 +85,16 @@ export default {
     }
     .input-search {
       padding-right: 5px;
+    }
+  }
+  .list-table {
+    .list-header {
+      padding: 3px 5px;
+      font-size: 12px;
+      color: $secondary-text-color;
+      background-color: #ccc;
+      display: grid;
+      grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr;
     }
   }
 }
