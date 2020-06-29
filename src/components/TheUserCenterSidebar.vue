@@ -49,7 +49,7 @@ export default {
             { title: "我的红包", url: "/user/redpackets" },
             { title: "我的金币", url: "/user/coin" },
             { title: "我的积分", url: "/user/points" },
-            { title: "我的优惠券", url: "/user/userinfo" }
+            { title: "我的优惠券", url: "/user/coupon" }
           ]
         },
         {

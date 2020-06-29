@@ -84,6 +84,11 @@ export default [
       {
         path: "points",
         component: () => import("@/page/user/Points")
+      },
+      //我的优惠券
+      {
+        path: "coupon",
+        component: () => import("@/page/user/Coupon")
       }
     ]
   },
