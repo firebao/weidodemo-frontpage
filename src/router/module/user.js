@@ -89,6 +89,11 @@ export default [
       {
         path: "coupon",
         component: () => import("@/page/user/Coupon")
+      },
+      //关注商品
+      {
+        path: "favgoods",
+        component: () => import("@/page/user/FavGoods")
       }
     ]
   },

@@ -55,7 +55,7 @@ export default {
         {
           title: "我的关注",
           subnav: [
-            { title: "关注商品", url: "/user/userinfo" },
+            { title: "关注商品", url: "/user/favgoods" },
             { title: "关注店铺", url: "/user/userinfo" },
             { title: "关注菜谱", url: "/user/userinfo" },
             { title: "关注内容", url: "/user/userinfo" }
