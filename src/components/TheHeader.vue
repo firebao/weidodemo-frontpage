@@ -1,3 +1,14 @@
+<!--
+#***********************************************
+#
+#      Filename: /root/vue-demo/src/components/TheHeader.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: Header组件
+#        Create: 2020-07-15 18:07:27
+# Last Modified: 2020-07-15 18:07:27
+#***********************************************
+-->
 <template>
   <header class="main-header">
     <div class="container-fluid flex v-middle h-between">
@@ -16,19 +27,22 @@
 </template>
 <script>
 import BaseLogo from "@/components/BaseLogo";
+import { GET_NAV } from "@/utils/request/requestTypes";
 export default {
   data: function() {
     return {
       nav: [{ type: "mainNav", name: "首页", url: "/" }]
     };
   },
-  mounted: async function() {
+  created() {
     //获取主导航数据
-    this.nav = await this.$Http.getNav();
-    //绑定scroll事件
+    this.$Http[GET_NAV]().then(res => {
+      this.nav = res.data;
+    });
+  },
+  mounted() {
     window.addEventListener("scroll", this.scrollHandle);
   },
-
   methods: {
     //scroll事件处理
     scrollHandle: function() {

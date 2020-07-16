@@ -8,19 +8,20 @@
 //#        Create: 2020-07-14 14:45:18
 //# Last Modified: 2020-07-14 14:45:18
 //#***********************************************
-//登录后往state中写入token
 export const LOGIN = "LOGIN";
-//登出后删除state中的token
 export const LOGOUT = "LOGOUT";
-//更新用户信息
 export const UPDATE_USERINFO = "UPDATE_USERINFO";
 export const USERINFO = "USERINFO";
 export const UPDATE_LOCATIONINFO = "UPDATE_LOCATIONINFO";
+export const SET_MOBILE_STATE = "SET_MOBILE_SATE";
+export const SET_SEND_CODE_STATE = "SET_SEND_CODE_SATE";
 
 export default {
   LOGIN,
   LOGOUT,
   UPDATE_USERINFO,
   USERINFO,
-  UPDATE_LOCATIONINFO
+  UPDATE_LOCATIONINFO,
+  SET_MOBILE_STATE,
+  SET_SEND_CODE_STATE
 };

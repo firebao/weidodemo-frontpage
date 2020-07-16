@@ -1,3 +1,14 @@
+<!--
+#***********************************************
+#
+#      Filename: /root/vue-demo/src/page/user/Login.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: Login用户登录页面
+#        Create: 2020-07-09 16:43:24
+# Last Modified: 2020-07-09 16:43:24
+#***********************************************
+-->
 <template>
   <div>
     <simple-header title="用户登录" :type="loginType"></simple-header>
@@ -14,6 +25,7 @@
               ref="loginCaptcha"
               v-if="loginType === 'loginCaptcha'"
               key="l-c"
+              autofocus
             >
               <template v-slot:handler>
                 <a class="button-dashed" @click="loginPass">
@@ -163,7 +175,178 @@
     </main>
   </div>
 </template>
-<script src="@/page/js/login.js"></script>
+<script>
+import { createNamespacedHelpers } from "vuex";
+import { Checkbox } from "view-design";
+import SimpleHeader from "@/components/TheSimpleHeader";
+import InputGroup from "@/components/BaseInputGroup";
+import BaseForm from "@/components/BaseForm";
+import BaseDialog from "@/components/BaseDialog";
+import SlideVerification from "@/components/SlideVerification";
+import dayjs from "dayjs";
+import { LOGIN, SET_MOBILE_STATE } from "@/store/mutationTypes";
+
+const { mapState, mapMutations } = createNamespacedHelpers("user");
+
+export default {
+  name: "Login",
+  data: function() {
+    return {
+      mobile: "",
+      mobileValidateState: "",
+      captcha: "",
+      password: "",
+      loginType: "loginCaptcha",
+      dialogShow: false,
+      verifyFlag: false,
+      slideVerification: false,
+      currentForm: "",
+      oauthLoginObject: {},
+      oauthShowOrHide: false,
+      oauthType: "",
+      oauthQQAppId: "",
+      oauthQQScope: "",
+      oauthWeixinAppId: "",
+      oauthWeixinScope: "",
+      oauthWeiboAppId: "",
+      oauthRediectUrl: "",
+      oauthState: ""
+    };
+  },
+  computed: {
+    ...mapState({
+      mobileState: state => state.mobileValidateState
+    })
+  },
+  watch: {
+    oauthType: function(oauthType) {
+      let object = {};
+      switch (oauthType) {
+        case "qq":
+          object.title = "QQ登录";
+          object.id = "oauth-qq";
+          object.url = `https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=${this.oauthQQAppId}&redirect_uri=${this.oauthRediectUrl}&scope=${this.oauthQQScope}`;
+          break;
+        case "weixin":
+          object.title = "微信登录";
+          object.id = "oauth-weixin";
+          object.url = `https://open.weixin.qq.com/connect/qrconnect?appid=${this.oauthWeixinAppId}&redirect_uri=${this.oauthRediectUrl}&response_type=code&scope=${this.oauthWeixinScope}&state=${this.oauthState}#wechat_redirect`;
+          break;
+        case "weibo":
+          object.title = "微博登录";
+          object.id = "oauth-weibod";
+          object.url = `https://api.weibo.com/oauth2/authorize?client_id=${this.oauthWeiboAppId}&response_type=code&redirect_uri=${this.oauthRediectUrl}`;
+          break;
+        default:
+          object.title = "";
+          object.id = "";
+          object.url = "";
+      }
+      debugger;
+      this.oauthLoginObject = object;
+    }
+  },
+  methods: {
+    ...mapMutations({
+      storeToken: LOGIN,
+      storeMobileState: SET_MOBILE_STATE
+    }),
+    /**
+     * @desc: 设置登录模式为手机+密码
+     * @returns: void
+     */
+    loginPass: function() {
+      this.loginType = "loginPass";
+    },
+    /**
+     * @desc: 设置登录模式为手机+验证码
+     * @returns: void
+     */
+    loginCaptcha: function() {
+      this.loginType = "loginCaptcha";
+    },
+    /**
+     * @desc: 发送验证码按键点击事件
+     * @returns: void
+     */
+    handleSendCode: function() {
+      this.setDialogShow(true);
+    },
+    /**
+     * @desc: 滑块验证弹出框显示影藏切换
+     * @param: {bool} value
+     * @returns: void
+     */
+    setDialogShow(value) {
+      this.dialogShow = value;
+    },
+    /**
+     * @desc: 滑块验证成功
+     * @returns: void
+     */
+    handleVerifyOk: function() {
+      this.setDialogShow(false);
+      this.$store.commit("setSendCoteState", "verifySuccess");
+      this.sendCode();
+    },
+    /**
+     * @desc: 发送短信验证码
+     * @returns: void
+     */
+    sendCode: async function() {
+      let data = {};
+      data.mobile = this.mobile;
+      let res = await this.$Http.sendCmsCode(data);
+      console.log(res);
+    },
+    /**
+     * @desc: 登录操作
+     * @returns: void
+     */
+    doLogin: async function() {
+      //表单验证
+      let result = await this.$refs[this.loginType].validate();
+      if (!result) return;
+      //axios发送登录请求
+      let data = {};
+      let res;
+      data.mobile = this.mobile.replace(/\s+/g, "");
+      if (this.loginType === "loginPass") {
+        data.password = this.password;
+        res = await this.$Http.login(data);
+      } else if (this.loginType === "loginCaptcha") {
+        data.captcha = this.captcha;
+        res = await this.$Http.loginMobile(data);
+      }
+      if (res) {
+        //vuex存储token
+        let newTime = Math.round(new Date() / 1000);
+        let payload = {
+          token: res.token,
+          expiresTime: dayjs(res.expires_time) - newTime
+        };
+        this.storeToken(payload);
+        setTimeout(this.$router.go(-1), 2000);
+      }
+    },
+    //handle Oauth2 third-party login
+    handleOauthLogin: function(type) {
+      if (["qq", "weixin", "weibo"].indexOf(type) !== -1) {
+        this.oauthType = type;
+        this.oauthShowOrHide = true;
+      }
+    }
+  },
+  components: {
+    "i-checkbox": Checkbox,
+    SimpleHeader,
+    InputGroup,
+    BaseForm,
+    BaseDialog,
+    SlideVerification
+  }
+};
+</script>
 <style scoped lang="scss">
 @import "@/assets/css/base.scss";
 div {

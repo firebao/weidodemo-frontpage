@@ -1,8 +1,19 @@
+<!--
+#***********************************************
+#
+#      Filename: /root/vue-demo/src/page/Home.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: Home主页
+#        Create: 2020-07-15 18:04:04
+# Last Modified: 2020-07-15 18:04:04
+#***********************************************
+-->
 <template>
   <div>
-    <!-- weido商城Header组件 -->
+    <!-- Header Nav -->
     <mall-header></mall-header>
-    <!-- end Header-->
+    <!-- end Header Nav-->
     <!-- weido商城主页面 -->
     <main>
       <section class="main">

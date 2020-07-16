@@ -1,3 +1,14 @@
+<!--
+#***********************************************
+#
+#      Filename: /root/vue-demo/src/components/BaseInputGroup.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: 用户登录、注册输入框组
+#        Create: 2020-07-11 10:12:54
+# Last Modified: 2020-07-11 10:12:54
+#***********************************************
+-->
 <template>
   <div class="wrapper">
     <div class="label flex v-middle">
@@ -12,10 +23,12 @@
         :maxLength="maxLength"
         :placeholder="placeHolder"
         :prop="prop"
+        :autofocus="autofocus"
         @input="handleInput"
         @keyup.enter="handleValidate"
         @blur="handleValidate"
         @change="handleValidate"
+        style="ime-mode:disable"
       />
       <span class="icon flex v-middle h-middle">
         <icon-svg class="i20" :icon-class="icon"></icon-svg>
@@ -78,21 +91,12 @@ export default {
       }
     };
   },
-  computed: {
-    maxLength: function() {
-      if (this.type === "tel") return 11;
-      if (this.name === "captcha") return 4;
-      return "";
-    },
-    form: function() {
-      let parent = this.$parent;
-      while (parent.$options.componentName !== "BaseForm") {
-        parent = parent.$parent;
-      }
-      return parent;
-    }
-  },
   props: {
+    //是否自动获得输入焦点
+    autofocus: {
+      type: Boolean,
+      default: false
+    },
     prop: {
       type: String,
       required: true
@@ -141,13 +145,29 @@ export default {
       default: "prending"
     }
   },
+  inject: ["form"],
+  computed: {
+    maxLength: function() {
+      if (this.type === "tel") return 11;
+      if (this.name === "captcha") return 4;
+      return "";
+    }
+  },
   methods: {
+    /**
+     * @desc: 获取验证规则
+     * @returns: {object}
+     */
     getRule: function() {
       let rule = new Object();
       rule[this.prop] = Object.assign(this.rule, this.defaultRule)[this.prop];
       return rule;
     },
-    //data binding currentValue <=> target.value
+    /**
+     * @desc: input事件触发
+     * @param: {Event} event
+     * @returns: void
+     */
     handleInput: function(event) {
       let value = event.currentTarget.value;
       if (this.type === "tel" || this.prop == "mobile") {
@@ -165,7 +185,11 @@ export default {
     setCurrentValue(value) {
       this.currentValue = value;
     },
-    //data validate
+    /**
+     * @desc: 方法描述
+     * @param: {Closure} callback 验证后的回调函数
+     * @returns: void
+     */
     handleValidate: function(callback) {
       let rule, value, cv;
       cv = this.currentValue;

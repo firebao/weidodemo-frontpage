@@ -1,3 +1,13 @@
+///javascript
+//#***********************************************
+//#
+//#      Filename: /root/vue-demo/src/main.js
+//#
+//#        Author: wwj - 318348750@qq.com
+//#   Description: vue main.js
+//#        Create: 2020-07-15 15:38:34
+//# Last Modified: 2020-07-15 15:38:34
+//#***********************************************
 //载入Vue框架、Vue Router、Vuex核心插件实例对象
 import Vue from "vue";
 import router from "./router";
@@ -11,7 +21,7 @@ import "@/icons";
 //载入自定义组件IconSvg
 import IconSvg from "@/components/IconSvg";
 //载入axios的封装模块request
-import Http from "@/utils/request";
+import Http from "@/utils/request/request";
 //载入iView中Input，Rate组件以及iView的css
 import { Input, Rate } from "view-design";
 import "view-design/dist/styles/iview.css";
