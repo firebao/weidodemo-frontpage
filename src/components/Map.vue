@@ -9,14 +9,13 @@
         <div class="pager"></div>
       </div>
       <div class="container" id="amap-container"></div>
-    </div>  
+    </div>
   </div>
 </template>
 <script>
-  export default {
-    name: "MapContainer",
-    data: function() {}
-  };
+export default {
+  name: "MapContainer",
+  data: function() {}
+};
 </script>
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

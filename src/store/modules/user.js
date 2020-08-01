@@ -9,7 +9,7 @@
 //# Last Modified: 2020-07-14 16:23:41
 //#***********************************************
 
-import Cookie from "@/utils/clientData/cookie";
+import ClientData from "@/utils/clientData/clientData";
 import Http from "@/utils/request/request";
 import { Message } from "view-design";
 import {
@@ -22,10 +22,11 @@ import {
   SET_SEND_CODE_STATE
 } from "@/store/mutationTypes";
 
+const clientData = ClientData.getStorage();
 //state
 const state = {
   //用户登录服务端返回的JWT Token
-  token: Cookie.get("login_status") || null,
+  token: clientData.getItem("login_status") || null,
   //用户信息
   userInfo: null,
   //用户所在城市信息
@@ -41,12 +42,12 @@ const mutations = {
   //用户登入
   [LOGIN](state, payload) {
     state.token = payload.token;
-    Cookie.set("login_status", payload.token, payload.expiresTime);
+    clientData.setItem("login_status", payload.token, payload.expiresTime);
   },
   //用户登出
   [LOGOUT](state) {
     state.token = null;
-    Cookie.remove("login_status");
+    clientData.removeItem("login_status");
   },
   //更新用户信息
   [UPDATE_USERINFO](state, payload) {

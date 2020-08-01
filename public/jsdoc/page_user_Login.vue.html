@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DocStrap Source: page/user/Login.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">DocStrap</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-component_BaseLogo.html">component/BaseLogo</a></li><li><a href="module-component_TheHeader.html">component/TheHeader</a></li><li><a href="module-component_TheSvgMenu.html">component/TheSvgMenu</a></li><li><a href="module-page_Home.html">page/Home</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#calcTextareaHeight">calcTextareaHeight</a></li><li><a href="global.html#calculateNodeStyling">calculateNodeStyling</a></li><li><a href="global.html#focusFirst">focusFirst</a></li><li><a href="global.html#getNextTab">getNextTab</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: page/user/Login.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;!--
+#***********************************************
+#
+#      Filename: /root/vue-demo/src/page/user/Login.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: Login用户登录页面
+#        Create: 2020-07-09 16:43:24
+# Last Modified: 2020-07-09 16:43:24
+#***********************************************
+-->
+&lt;template>
+  &lt;div>
+    &lt;simple-header title="用户登录" :type="loginType">&lt;/simple-header>
+    &lt;main>
+      &lt;div class="main-container">
+        &lt;div class="login-container">
+          &lt;transition
+            enter-active-class="animated fadeInRight"
+            leave-active-class="animated fadeOutLeft"
+            mode="out-in"
+          >
+            &lt;!-- login with captcha -->
+            &lt;base-form
+              ref="loginCaptcha"
+              v-if="loginType === 'loginCaptcha'"
+              key="l-c"
+              autofocus
+            >
+              &lt;template v-slot:handler>
+                &lt;a class="button-dashed" @click="loginPass">
+                  切换为手机+密码登录
+                &lt;/a>
+              &lt;/template>
+              &lt;input-group
+                key="c-m"
+                v-model="mobile"
+                prop="mobile"
+                icon="mobile"
+                label="手机号码"
+                placeHolder="输入您的手机号码"
+                name="mobile"
+                id="mobile"
+                type="tel"
+              >
+              &lt;/input-group>
+              &lt;input-group
+                key="c-c"
+                v-model="captcha"
+                prop="captcha"
+                icon="captcha"
+                label="动态验证码"
+                placeHolder="手机动态验证码"
+                name="captcha"
+                id="captcha"
+                type="text"
+              >
+                &lt;template v-slot:default="slotProps">
+                  &lt;a
+                    class="button-captcha"
+                    :disabled="!mobileState"
+                    :class="slotProps.flag ? 'move-left' : ''"
+                    @click="handleSendCode"
+                  >
+                    获取验证码
+                  &lt;/a>
+                &lt;/template>
+              &lt;/input-group>
+              &lt;button type="submit" @click.prevent="doLogin">登录&lt;/button>
+              &lt;p class="tips">
+                提示：未注册围兜账号的手机号，登录时将自动注册围兜账号，且代表您同意
+                &lt;router-link class="inline" to="/user-agreement">
+                  《围兜网用户协议》
+                &lt;/router-link>
+              &lt;/p>
+              &lt;div class="third-login flex v-middle h-between">
+                &lt;span>第三方登录&lt;/span>
+                &lt;span class="flex" @click="handleOauthLogin('qq')">
+                  &lt;icon-svg class="i20" icon-class="qq">&lt;/icon-svg>
+                &lt;/span>
+                &lt;span class="flex" @click="handleOauthLogin('weixin')">
+                  &lt;icon-svg class="i20" icon-class="weixin">&lt;/icon-svg>
+                &lt;/span>
+                &lt;span class="flex" @click="handleOauthLogin('weibo')">
+                  &lt;icon-svg class="i20" icon-class="weibo">&lt;/icon-svg>
+                &lt;/span>
+              &lt;/div>
+              &lt;!-- befor send code the slide verify need to do -->
+              &lt;base-dialog
+                v-model="dialogShow"
+                :closable="false"
+                title="请向右拖动滑块完成验证"
+                :footerHide="true"
+                width="450"
+              >
+                &lt;div class="flex h-middle">
+                  &lt;slide-verification
+                    v-model="verifyFlag"
+                    @verify-ok="handleVerifyOk"
+                  >
+                  &lt;/slide-verification>
+                &lt;/div>
+              &lt;/base-dialog>
+              &lt;!-- end -->
+            &lt;/base-form>
+            &lt;!-- end login with captcha -->
+            &lt;!-- login with password -->
+            &lt;base-form
+              ref="loginPass"
+              method="post"
+              v-if="loginType === 'loginPass'"
+              key="l-p"
+            >
+              &lt;template v-slot:handler :value="dialogShow">
+                &lt;a class="button-dashed" @click="loginCaptcha">
+                  切换为手机+验证码登录
+                &lt;/a>
+              &lt;/template>
+              &lt;input-group
+                key="p-m"
+                v-model="mobile"
+                prop="mobile"
+                icon="mobile"
+                label="手机号码"
+                placeHolder="输入您的手机号码"
+                name="mobile"
+                id="mobile"
+                type="tel"
+              >
+              &lt;/input-group>
+              &lt;input-group
+                key="p-p"
+                v-model="password"
+                prop="password"
+                icon="password"
+                label="密码"
+                placeHolder="8-16位注册密码"
+                name="password"
+                id="password"
+                type="password"
+              >
+              &lt;/input-group>
+              &lt;div class="about-password flex h-between">
+                &lt;i-checkbox>&amp;nbsp;记住密码&lt;/i-checkbox>
+                &lt;router-link to="/forgetPass">忘记密码&lt;/router-link>
+              &lt;/div>
+              &lt;button type="submit" @click.prevent="doLogin">登录&lt;/button>
+              &lt;div class="third-login flex h-between v-middle">
+                &lt;span>第三方登录&lt;/span>
+                &lt;span class="flex">
+                  &lt;icon-svg class="i20" icon-class="qq">&lt;/icon-svg>
+                &lt;/span>
+                &lt;span class="flex">
+                  &lt;icon-svg class="i20" icon-class="weixin">&lt;/icon-svg>
+                &lt;/span>
+                &lt;span class="flex">
+                  &lt;icon-svg class="i20" icon-class="weibo">&lt;/icon-svg>
+                &lt;/span>
+              &lt;/div>
+            &lt;/base-form>
+          &lt;/transition>
+          &lt;base-dialog
+            v-model="oauthShowOrHide"
+            :title="oauthLoginObject.title"
+            width="1000"
+          >
+            &lt;iframe
+              class="oauthLoginFrame"
+              :id="oauthLoginObject.id"
+              :src="oauthLoginObject.url"
+            >&lt;/iframe>
+          &lt;/base-dialog>
+        &lt;/div>
+      &lt;/div>
+    &lt;/main>
+  &lt;/div>
+&lt;/template>
+&lt;script>
+import { createNamespacedHelpers } from "vuex";
+import { Checkbox } from "view-design";
+import SimpleHeader from "@/components/TheSimpleHeader";
+import InputGroup from "@/components/BaseInputGroup";
+import BaseForm from "@/components/BaseForm";
+import BaseDialog from "@/components/BaseDialog";
+import SlideVerification from "@/components/SlideVerification";
+import dayjs from "dayjs";
+import { LOGIN, SET_MOBILE_STATE } from "@/store/mutationTypes";
+
+const { mapState, mapMutations } = createNamespacedHelpers("user");
+
+export default {
+  name: "Login",
+  data() {
+    return {
+      mobile: "",
+      mobileValidateState: "",
+      captcha: "",
+      password: "",
+      loginType: "loginCaptcha",
+      dialogShow: false,
+      verifyFlag: false,
+      slideVerification: false,
+      currentForm: "",
+      oauthLoginObject: {},
+      oauthShowOrHide: false,
+      oauthType: "",
+      oauthQQAppId: "",
+      oauthQQScope: "",
+      oauthWeixinAppId: "",
+      oauthWeixinScope: "",
+      oauthWeiboAppId: "",
+      oauthRediectUrl: "",
+      oauthState: ""
+    };
+  },
+  computed: {
+    ...mapState({
+      mobileState: state => state.mobileValidateState
+    })
+  },
+  watch: {
+    oauthType: function(oauthType) {
+      let object = {};
+      switch (oauthType) {
+        case "qq":
+          object.title = "QQ登录";
+          object.id = "oauth-qq";
+          object.url = `https://graph.qq.com/oauth2.0/authorize?response_type=code&amp;client_id=${this.oauthQQAppId}&amp;redirect_uri=${this.oauthRediectUrl}&amp;scope=${this.oauthQQScope}`;
+          break;
+        case "weixin":
+          object.title = "微信登录";
+          object.id = "oauth-weixin";
+          object.url = `https://open.weixin.qq.com/connect/qrconnect?appid=${this.oauthWeixinAppId}&amp;redirect_uri=${this.oauthRediectUrl}&amp;response_type=code&amp;scope=${this.oauthWeixinScope}&amp;state=${this.oauthState}#wechat_redirect`;
+          break;
+        case "weibo":
+          object.title = "微博登录";
+          object.id = "oauth-weibod";
+          object.url = `https://api.weibo.com/oauth2/authorize?client_id=${this.oauthWeiboAppId}&amp;response_type=code&amp;redirect_uri=${this.oauthRediectUrl}`;
+          break;
+        default:
+          object.title = "";
+          object.id = "";
+          object.url = "";
+      }
+      debugger;
+      this.oauthLoginObject = object;
+    }
+  },
+  methods: {
+    ...mapMutations({
+      storeToken: LOGIN,
+      storeMobileState: SET_MOBILE_STATE
+    }),
+    /**
+     * @desc: 设置登录模式为手机+密码
+     * @returns: void
+     */
+    loginPass: function() {
+      this.loginType = "loginPass";
+    },
+    /**
+     * @desc: 设置登录模式为手机+验证码
+     * @returns: void
+     */
+    loginCaptcha: function() {
+      this.loginType = "loginCaptcha";
+    },
+    /**
+     * @desc: 发送验证码按键点击事件
+     * @returns: void
+     */
+    handleSendCode: function() {
+      this.setDialogShow(true);
+    },
+    /**
+     * @desc: 滑块验证弹出框显示影藏切换
+     * @param: {bool} value
+     * @returns: void
+     */
+    setDialogShow(value) {
+      this.dialogShow = value;
+    },
+    /**
+     * @desc: 滑块验证成功
+     * @returns: void
+     */
+    handleVerifyOk: function() {
+      this.setDialogShow(false);
+      this.$store.commit("setSendCoteState", "verifySuccess");
+      this.sendCode();
+    },
+    /**
+     * @desc: 发送短信验证码
+     * @returns: void
+     */
+    sendCode: async function() {
+      let data = {};
+      data.mobile = this.mobile;
+      let res = await this.$Http.sendCmsCode(data);
+      console.log(res);
+    },
+    /**
+     * @desc: 登录操作
+     * @returns: void
+     */
+    doLogin: async function() {
+      //表单验证
+      let result = await this.$refs[this.loginType].validate();
+      if (!result) return;
+      //axios发送登录请求
+      let data = {};
+      let res;
+      data.mobile = this.mobile.replace(/\s+/g, "");
+      if (this.loginType === "loginPass") {
+        data.password = this.password;
+        res = await this.$Http.login(data);
+      } else if (this.loginType === "loginCaptcha") {
+        data.captcha = this.captcha;
+        res = await this.$Http.loginMobile(data);
+      }
+      if (res) {
+        //vuex存储token
+        let newTime = Math.round(new Date() / 1000);
+        let payload = {
+          token: res.token,
+          expiresTime: dayjs(res.expires_time) - newTime
+        };
+        this.storeToken(payload);
+        setTimeout(this.$router.go(-1), 2000);
+      }
+    },
+    //handle Oauth2 third-party login
+    handleOauthLogin: function(type) {
+      if (["qq", "weixin", "weibo"].indexOf(type) !== -1) {
+        this.oauthType = type;
+        this.oauthShowOrHide = true;
+      }
+    }
+  },
+  components: {
+    "i-checkbox": Checkbox,
+    SimpleHeader,
+    InputGroup,
+    BaseForm,
+    BaseDialog,
+    SlideVerification
+  }
+};
+&lt;/script>
+&lt;style scoped lang="scss">
+@import "@/assets/css/base.scss";
+div {
+  main {
+    height: 100%;
+
+    .login-container,
+    .register-container {
+      padding: 10px;
+      width: 320px;
+      margin: 150px auto 0;
+
+      .about-password {
+        margin-top: 10px;
+      }
+
+      button {
+        width: 100%;
+        margin-top: 30px;
+        height: 40px;
+        color: white;
+        background-color: #199ed8;
+        opacity: 0.7;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+      }
+
+      p.tips {
+        margin-top: 10px;
+        font-size: 12px;
+        color: $secondary-text-color;
+      }
+
+      .third-login {
+        margin-top: 40px;
+        .flex {
+          cursor: pointer;
+        }
+      }
+      .oauthLoginFrame {
+        height: 600px;
+        width: 100%;
+        border: none;
+        //overwrite qq authorization page style
+        .float_left {
+          float: none;
+        }
+      }
+    }
+  }
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+	
+		on Wed Jul 22nd 2020
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

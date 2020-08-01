@@ -37,10 +37,13 @@ import MallHeader from "@/components/TheHeader.vue";
 import MallFooter from "@/components/TheFooter.vue";
 import SvgMenu from "@/components/TheSvgMenu.vue";
 import SubMenu from "@/components/TheSubMenu.vue";
+/**
+ * Home页面，首页
+ * @vuedoc
+ * @exports page/Home
+ */
 export default {
-  data() {
-    return {};
-  },
+  name: "Home",
   components: {
     MallHeader,
     MallFooter,
@@ -49,16 +52,16 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
-section.main {
+<style lang="scss">
+.main {
   position: relative;
 
   .img-bg {
+    width: 100%;
     position: absolute;
     top: 0;
     left: 0;
     text-align: center;
-    width: 100%;
     z-index: -1;
 
     img {

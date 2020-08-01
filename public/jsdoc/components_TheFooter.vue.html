@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DocStrap Source: components/TheFooter.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">DocStrap</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-component_BaseLogo.html">component/BaseLogo</a></li><li><a href="module-component_TheHeader.html">component/TheHeader</a></li><li><a href="module-component_TheSvgMenu.html">component/TheSvgMenu</a></li><li><a href="module-page_Home.html">page/Home</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#calcTextareaHeight">calcTextareaHeight</a></li><li><a href="global.html#calculateNodeStyling">calculateNodeStyling</a></li><li><a href="global.html#focusFirst">focusFirst</a></li><li><a href="global.html#getNextTab">getNextTab</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: components/TheFooter.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;!--
+#***********************************************
+#
+#      Filename: /root/vue-demo/src/components/TheFooter.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: TheFooter组件
+#        Create: 2020-07-17 12:19:54
+# Last Modified: 2020-07-17 12:19:54
+#***********************************************
+-->
+&lt;template>
+  &lt;footer class="main-footer">
+    &lt;div class="main-container">
+      &lt;!-- footer 上栏 -->
+      &lt;div class="footer-top-row">
+        &lt;address class="box info">
+          &lt;base-logo logoType="complex">&lt;/base-logo>
+          &lt;ul>
+            &lt;li>&lt;strong>地址：&lt;/strong>XX市XX区XX街道XX号&lt;/li>
+            &lt;li>&lt;strong>邮箱：&lt;/strong>abc@def.com&lt;/li>
+            &lt;li>&lt;strong>电话：&lt;/strong>+086-0943-8563737&lt;/li>
+          &lt;/ul>
+        &lt;/address>
+        &lt;div class="footer-columns">
+          &lt;div
+            v-for="(item, index) in footerInfo"
+            class="box footer-column"
+            :key="index"
+          >
+            &lt;div class="column-title">
+              {{ item.name }}
+            &lt;/div>
+            &lt;ul>
+              &lt;li v-for="(subItem, subIndex) in item.subNav" :key="subIndex">
+                &lt;router-link :to="subItem.url">{{ subItem.name }}&lt;/router-link>
+              &lt;/li>
+            &lt;/ul>
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+      &lt;!-- end footer 上栏 -->
+      &lt;!-- footer 上栏 -->
+      &lt;div class="footer-bot-row">
+        &lt;div class="box copy-right">
+          &lt;base-logo>&lt;/base-logo>
+          &lt;p>Copyright:2019-2028,围兜网weido.com.All rights reserved.&lt;/p>
+          &lt;p>京ICP备XXXXXXXX号-X&lt;/p>
+        &lt;/div>
+        &lt;div class="box qr-code">
+          &lt;div class="qr-item">
+            &lt;p>安卓app&lt;/p>
+            &lt;img :src="require('@/assets/qr-code.png').default" alt="" />
+          &lt;/div>
+          &lt;div class="qr-item">
+            &lt;p>苹果app&lt;/p>
+            &lt;img :src="require('@/assets/qr-code.png').default" alt="" />
+          &lt;/div>
+          &lt;div class="qr-item">
+            &lt;p>微信公众号&lt;/p>
+            &lt;img :src="require('@/assets/qr-code.png').default" alt="" />
+          &lt;/div>
+        &lt;/div>
+      &lt;/div>
+      &lt;!-- end footer 下栏 -->
+    &lt;/div>
+  &lt;/footer>
+&lt;/template>
+&lt;script>
+import BaseLogo from "@/components/BaseLogo";
+import { GET_FOOTER_INFO } from "@/utils/request/requestTypes";
+/**
+ * TheFooter组件,页面中用到的Logo
+ * @vuedoc
+ * @exports component/BaseLogo
+ */
+export default {
+  name: "TheFooter",
+  data: function() {
+    /**
+     * 页脚的链接信息数组
+     */
+    return {
+      footerInfo: null
+    };
+  },
+  components: {
+    BaseLogo
+  },
+  created() {
+    this.$Http[GET_FOOTER_INFO]()
+      .then(res => {
+        this.footerInfo = res.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+};
+&lt;/script>
+&lt;style lang="scss">
+@import "@/assets/css/base.scss";
+@import "@/assets/css/layout.scss";
+.main-footer {
+  padding: 30px 0;
+  background-color: $bg-color;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+  .footer-top-row,
+  .footer-bot-row {
+    @include flex-layout($justify-content: space-between);
+  }
+  .box {
+    box-shadow: 0 0 5px #ccc;
+    border-radius: 10px;
+  }
+  .footer-top-row {
+    .info {
+      position: relative;
+      width: 300px;
+      padding: 10px;
+      background-color: #999999;
+      font-style: initial;
+      ul {
+        padding: 10px;
+      }
+    }
+    .footer-columns {
+      @include flex-layout($justify-content: space-between);
+      .footer-column {
+        text-align: center;
+        padding: 10px;
+        width: 150px;
+        height: 145px;
+        background-color: #ccc;
+        margin-left: 15px;
+        .column-title {
+          font-weight: 900;
+        }
+        ul {
+          padding: 10px 0;
+          a {
+            color: #666;
+            &amp;:hover {
+              color: $accent-color;
+            }
+          }
+        }
+      }
+    }
+  }
+  .footer-bot-row {
+    margin-top: 40px;
+    height: 100px;
+    .copy-right {
+      position: relative;
+      width: 500px;
+      height: 100px;
+      background-color: #999;
+      padding: 10px;
+    }
+    p {
+      font-size: 12px;
+    }
+    .qr-code {
+      @include flex-layout($justify-content: space-around);
+      padding: 10px;
+      width: 600px;
+      height: 100px;
+      background-color: #999;
+      .qr-item {
+        @include flex-layout();
+        p {
+          padding-right: 5px;
+          font-weight: 900;
+        }
+        img {
+          width: 70px;
+          height: 70px;
+        }
+      }
+    }
+  }
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+	
+		on Wed Jul 22nd 2020
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

@@ -1,19 +1,31 @@
+<!--
+#***********************************************
+#
+#      Filename: /root/vue-demo/src/components/TheFooter.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: TheFooter组件
+#        Create: 2020-07-17 12:19:54
+# Last Modified: 2020-07-17 12:19:54
+#***********************************************
+-->
 <template>
-  <footer>
+  <footer class="main-footer">
     <div class="main-container">
-      <div class="footer-head flex h-between">
-        <div class="info">
-          <base-logo type="complex"></base-logo>
+      <!-- footer 上栏 -->
+      <div class="footer-top-row">
+        <address class="box info">
+          <base-logo logoType="complex"></base-logo>
           <ul>
-            <li>地址：XX市XX区XX街道XX号</li>
-            <li>邮箱：abc@def.com</li>
-            <li>电话：+086-0943-8563737</li>
+            <li><strong>地址：</strong>XX市XX区XX街道XX号</li>
+            <li><strong>邮箱：</strong>abc@def.com</li>
+            <li><strong>电话：</strong>+086-0943-8563737</li>
           </ul>
-        </div>
-        <div class="footer-columns flex h-between">
+        </address>
+        <div class="footer-columns">
           <div
-            v-for="(item, index) in footerInfo.footerNav"
-            class="footer-column"
+            v-for="(item, index) in footerInfo"
+            class="box footer-column"
             :key="index"
           >
             <div class="column-title">
@@ -27,67 +39,93 @@
           </div>
         </div>
       </div>
-      <div class="footer-bot flex h-between">
-        <div class="copy-right">
+      <!-- end footer 上栏 -->
+      <!-- footer 上栏 -->
+      <div class="footer-bot-row">
+        <div class="box copy-right">
           <base-logo></base-logo>
           <p>Copyright:2019-2028,围兜网weido.com.All rights reserved.</p>
           <p>京ICP备XXXXXXXX号-X</p>
         </div>
-        <div class="qr-code flex h-around">
-          <div class="qr-item flex v-middle">
+        <div class="box qr-code">
+          <div class="qr-item">
             <p>安卓app</p>
             <img :src="require('@/assets/qr-code.png').default" alt="" />
           </div>
-          <div class="qr-item flex v-middle">
+          <div class="qr-item">
             <p>苹果app</p>
             <img :src="require('@/assets/qr-code.png').default" alt="" />
           </div>
-          <div class="qr-item flex v-middle">
+          <div class="qr-item">
             <p>微信公众号</p>
             <img :src="require('@/assets/qr-code.png').default" alt="" />
           </div>
         </div>
       </div>
+      <!-- end footer 下栏 -->
     </div>
   </footer>
 </template>
 <script>
 import BaseLogo from "@/components/BaseLogo";
+import { GET_FOOTER_INFO } from "@/utils/request/requestTypes";
+/**
+ * TheFooter组件,页面中用到的Logo
+ * @vuedoc
+ * @exports component/BaseLogo
+ */
 export default {
   name: "TheFooter",
   data: function() {
+    /**
+     * 页脚的链接信息数组
+     */
     return {
-      footerInfo: ""
+      footerInfo: null
     };
-  },
-  mounted: async function() {
-    this.footerInfo = await this.$Http.getFooterInfo();
   },
   components: {
     BaseLogo
+  },
+  created() {
+    this.$Http[GET_FOOTER_INFO]()
+      .then(res => {
+        this.footerInfo = res.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 };
 </script>
-<style scoped lang="scss">
-footer {
-  width: 100%;
-  background-color: #f6f6f6;
-  height: 340px;
+<style lang="scss">
+@import "@/assets/css/base.scss";
+@import "@/assets/css/layout.scss";
+.main-footer {
   padding: 30px 0;
-  .footer-head {
-    height: 145px;
+  background-color: $bg-color;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.25);
+  .footer-top-row,
+  .footer-bot-row {
+    @include flex-layout($justify-content: space-between);
+  }
+  .box {
+    box-shadow: 0 0 5px #ccc;
+    border-radius: 10px;
+  }
+  .footer-top-row {
     .info {
       position: relative;
       width: 300px;
-      background-color: #999999;
-      height: 100%;
       padding: 10px;
+      background-color: #999999;
+      font-style: initial;
       ul {
         padding: 10px;
-        list-style: none;
       }
     }
     .footer-columns {
+      @include flex-layout($justify-content: space-between);
       .footer-column {
         text-align: center;
         padding: 10px;
@@ -100,15 +138,17 @@ footer {
         }
         ul {
           padding: 10px 0;
-          list-style: none;
           a {
             color: #666;
+            &:hover {
+              color: $accent-color;
+            }
           }
         }
       }
     }
   }
-  .footer-bot {
+  .footer-bot-row {
     margin-top: 40px;
     height: 100px;
     .copy-right {
@@ -117,30 +157,20 @@ footer {
       height: 100px;
       background-color: #999;
       padding: 10px;
-      a {
-        p {
-          position: absolute;
-          top: 18px;
-          left: 60px;
-          color: black;
-          font-size: 16px;
-          font-weight: 900;
-        }
-      }
     }
     p {
       font-size: 12px;
     }
     .qr-code {
-      display: flex;
+      @include flex-layout($justify-content: space-around);
       padding: 10px;
       width: 600px;
       height: 100px;
       background-color: #999;
       .qr-item {
+        @include flex-layout();
         p {
           padding-right: 5px;
-          font-size: 14px;
           font-weight: 900;
         }
         img {

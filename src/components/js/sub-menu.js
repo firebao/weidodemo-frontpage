@@ -3,10 +3,10 @@ export default {
   data() {
     return {
       category: {
-        "fruits": {
+        fruits: {
           name: "各色水果"
         },
-        "vegetables": {
+        vegetables: {
           name: "新鲜蔬菜"
         },
         "kitchen-goods": {
@@ -15,16 +15,16 @@ export default {
         "frozen-food": {
           name: "冷冻食品"
         },
-        "rices": {
+        rices: {
           name: "米面粮油"
         },
-        "fishes": {
+        fishes: {
           name: "海鲜水产"
         },
-        "meats": {
+        meats: {
           name: "肉禽蛋奶"
         },
-        "more": {
+        more: {
           name: "更多"
         }
       }

@@ -1,7 +1,18 @@
+<!--
+#***********************************************
+#
+#      Filename: src/components/TheSubMenu.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: SubMenu组件
+#        Create: 2020-07-19 09:12:31
+# Last Modified: 2020-07-19 09:12:31
+#***********************************************
+-->
 <template>
   <div class="menu-block" v-show="mainMenuActive">
     <div class="menu-caption">
-      <h2 class="menu-title flex">
+      <h2 class="menu-title">
         <icon-svg :icon-class="categoryIcon" class="i20"></icon-svg>
         {{ activeCategory }}
       </h2>
@@ -11,18 +22,24 @@
           v-for="(item, index) in subCategory"
           :key="index"
         >
-          <router-link :to="item.url">
-            <span class="c2-name">
-              {{ item.name }}
-            </span>
-          </router-link>
-          <ul class="sub-list flex wrap">
-            <li v-for="(subItem, subIndex) in item.c3" :key="subIndex">
-              <router-link :to="subItem.url">
-                {{ subItem.name }}
+          <dl>
+            <dt>
+              <router-link :to="item.url">
+                <span class="c2-name">
+                  {{ item.name }}
+                </span>
               </router-link>
-            </li>
-          </ul>
+            </dt>
+            <dd>
+              <ul class="sub-list flex wrap">
+                <li v-for="(subItem, subIndex) in item.c3" :key="subIndex">
+                  <router-link :to="subItem.url">
+                    {{ subItem.name }}
+                  </router-link>
+                </li>
+              </ul>
+            </dd>
+          </dl>
         </div>
       </div>
     </div>
@@ -32,20 +49,42 @@
   </div>
 </template>
 <script>
+import { createNamespacedHelpers } from "vuex";
+import { GET_CATEGORY } from "@/utils/request/requestTypes";
+const { mapState } = createNamespacedHelpers("menu");
+
+/**
+ * SubMenu组件，HOME页面中SVG SubMenu
+ * @vuedoc
+ * @exports component/TheSubMenu
+ */
 export default {
   name: "subMenu",
   data: function() {
     return {
+      /**
+       * category数据
+       */
       category: {}
     };
   },
-  mounted: async function() {
+  created() {
     //获取商品分类数据
-    this.category = await this.$Http.getCategory();
+    this.$Http[GET_CATEGORY]()
+      .then(res => {
+        this.category = res.data;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   computed: {
+    ...mapState({
+      activeCategoryName: state => state.activeCategory,
+      mainMenuActive: state => state.mainMenuActive
+    }),
     activeCategory: function() {
-      let category = this.$store.state.menu.activeCategory;
+      let category = this.activeCategoryName;
       let value = "";
       if (category != "") {
         value = this.category[category].name;
@@ -53,7 +92,7 @@ export default {
       return value;
     },
     categoryIcon: function() {
-      let category = this.$store.state.menu.activeCategory;
+      let category = this.activeCategoryName;
       let icon = "";
       if (category != "") {
         icon = this.category[category].icon;
@@ -61,15 +100,12 @@ export default {
       return icon;
     },
     subCategory: function() {
-      let category = this.$store.state.menu.activeCategory;
+      let category = this.activeCategoryName;
       let subMenu = [];
       if (category != "") {
         subMenu = this.category[category].c2;
       }
       return subMenu;
-    },
-    mainMenuActive: function() {
-      return this.$store.state.menu.mainMenuActive;
     }
   },
   methods: {}
@@ -77,40 +113,54 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "@/assets/css/base.scss";
+@import "@/assets/css/layout.scss";
 .menu-block {
+  width: 700px;
+  height: 650px;
   position: absolute;
-  top: 50px;
-  right: 0;
-  height: 600px;
-  width: 600px;
-  padding: 30px 20px 0;
-  border: 1px solid $aux-color-green-var1;
-  border-radius: 5px;
-  background-color: $bg-color;
+  top: 0px;
+  right: 15px;
+  border: 3px solid #9bdf70;
+  border-radius: 10px;
+  background-image: linear-gradient(
+    rgba(240, 251, 235, 0.8),
+    rgba(238, 250, 255, 0.8)
+  );
+  box-shadow: 2px 2px 10px #9bdf70;
+  overflow-y: auto;
   .menu-title {
-    font-size: 16px;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
+    display: flex;
+    padding: 10px 20px;
+    font-size: 1.6rem;
     position: relative;
     color: $text-color;
-    border-bottom: 2px solid $aux-color-green-var1;
+    border-bottom: 2px solid #9bdf70;
   }
   .sub-list {
-    padding-left: 10px;
-    margin-bottom: 10px;
     .sub-category {
-      border-bottom: 1px solid #eee;
-      padding-top: 5px;
+      border-bottom: 1px dashed #9bdf70;
+      padding: 10px;
+      dl {
+        display: grid;
+        grid-template-columns: 1fr 8fr;
+      }
       .c2-name {
-        border: 1px dashed #ccc;
         padding: 2px 5px;
-        margin-bottom: 5px;
         color: $text-color;
+        font-weight: 600;
+        &:hover {
+          color: $accent-color;
+        }
       }
     }
     li {
-      font-size: 14px;
       padding: 0 8px;
+      a {
+        color: $secondary-text-color;
+        &:hover {
+          color: $accent-color;
+        }
+      }
     }
   }
   .menu-img {

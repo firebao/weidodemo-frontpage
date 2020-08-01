@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DocStrap Source: utils/calcTextareaHeight.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">DocStrap</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-component_BaseLogo.html">component/BaseLogo</a></li><li><a href="module-component_TheHeader.html">component/TheHeader</a></li><li><a href="module-component_TheSvgMenu.html">component/TheSvgMenu</a></li><li><a href="module-page_Home.html">page/Home</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#calcTextareaHeight">calcTextareaHeight</a></li><li><a href="global.html#calculateNodeStyling">calculateNodeStyling</a></li><li><a href="global.html#focusFirst">focusFirst</a></li><li><a href="global.html#getNextTab">getNextTab</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: utils/calcTextareaHeight.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">//javascript
+//#***********************************************
+//#
+//#      Filename: /root/vue-demo/src/utils/calcTextareaHeight.js
+//#
+//#        Author: wwj - 318348750@qq.com
+//#   Description: textarea高度自适应
+//#        Create: 2020-06-28 10:18:49
+//# Last Modified: 2020-06-28 10:18:49
+//#***********************************************
+
+const HIDDEN_TEXTAREA_STYLE = `
+  min-height:0 !important;
+  max-height:none !important;
+  height:0 !important;
+  visibility:hidden !important;
+  overflow:hidden !important;
+  position:absolute !important;
+  z-index:-1000 !important;
+  top:0 !important;
+  right:0 !important
+`;
+
+const SIZING_STYLE = [
+  "letter-spacing",
+  "line-height",
+  "padding-top",
+  "padding-bottom",
+  "font-family",
+  "font-weight",
+  "font-size",
+  "text-rendering",
+  "text-transform",
+  "width",
+  "text-indent",
+  "padding-left",
+  "padding-right",
+  "border-width",
+  "box-sizing"
+];
+
+let computedStyleCache = {};
+let hiddenTextarea;
+
+/**
+ * @desc: 获取设置在当前textarea上的css属性
+ * @param: {objet} node textarea的node
+ * @param: {bool} [useCache=false] 是否启用缓存，默认不启用
+ * @returns: {返回类型} 描述信息
+ */
+function calculateNodeStyling(node, useCache = false) {
+  const nodeRef =
+    node.getAttribute("id") ||
+    node.getAttribute("data-reactid") ||
+    node.getAttribute("name");
+
+  if (useCache &amp;&amp; computedStyleCache[nodeRef]) {
+    return computedStyleCache[nodeRef];
+  }
+
+  const style = window.getComputedStyle(node);
+
+  const boxSizing =
+    style.getPropertyValue("box-sizing") ||
+    style.getPropertyValue("-moz-box-sizing") ||
+    style.getPropertyValue("-webkit-box-sizing");
+
+  const paddingSize =
+    parseFloat(style.getPropertyValue("padding-bottom")) +
+    parseFloat(style.getPropertyValue("padding-top"));
+
+  const borderSize =
+    parseFloat(style.getPropertyValue("border-bottom-width")) +
+    parseFloat(style.getPropertyValue("border-top-width"));
+
+  const sizingStyle = SIZING_STYLE.map(
+    name => `${name}:${style.getPropertyValue(name)}`
+  ).join(";");
+
+  const nodeInfo = {
+    sizingStyle,
+    paddingSize,
+    borderSize,
+    boxSizing
+  };
+
+  if (useCache &amp;&amp; nodeRef) {
+    computedStyleCache[nodeRef] = nodeInfo;
+  }
+
+  return nodeInfo;
+}
+
+/**
+ * @desc: 文本框根据输入内容自适应高度
+ * @param: {object} uiTextNode textarea node
+ * @param: {number} [minRows=null] 最小的行数
+ * @param: {number} [maxRows=null] 最大的行数
+ * @param: {bool} [useCache=false] 是否启用缓存，默认不启用
+ * @returns: {object} 描述信息
+ */
+function calcTextareaHeight(
+  uiTextNode,
+  minRows = null,
+  maxRows = null,
+  useCache = false
+) {
+  //如果不存在就新建一个影藏的textarea
+  if (!hiddenTextarea) {
+    hiddenTextarea = document.createElement("textarea");
+    document.body.appendChild(hiddenTextarea);
+  }
+
+  // Fix wrap="off" issue
+  // https://github.com/ant-design/ant-design/issues/6577
+  if (uiTextNode.getAttribute("wrap")) {
+    hiddenTextarea.setAttribute("wrap", uiTextNode.getAttribute("wrap"));
+  } else {
+    hiddenTextarea.removeAttribute("wrap");
+  }
+
+  // Copy all CSS properties that have an impact on the height of the content in
+  // the textbox
+  let {
+    paddingSize,
+    borderSize,
+    boxSizing,
+    sizingStyle
+  } = calculateNodeStyling(uiTextNode, useCache);
+
+  // Need to have the overflow attribute to hide the scrollbar otherwise
+  // text-lines will not calculated properly as the shadow will technically be
+  // narrower for content
+  hiddenTextarea.setAttribute(
+    "style",
+    `${sizingStyle};${HIDDEN_TEXTAREA_STYLE}`
+  );
+  hiddenTextarea.value = uiTextNode.value || uiTextNode.placeholder || "";
+
+  let minHeight = Number.MIN_SAFE_INTEGER;
+  let maxHeight = Number.MAX_SAFE_INTEGER;
+  let height = hiddenTextarea.scrollHeight;
+  let overflowY;
+
+  if (boxSizing === "border-box") {
+    // border-box: add border, since height = content + padding + border
+    height = height + borderSize;
+  } else if (boxSizing === "content-box") {
+    // remove padding, since height = content
+    height = height - paddingSize;
+  }
+
+  if (minRows !== null || maxRows !== null) {
+    // measure height of a textarea with a single row
+    hiddenTextarea.value = " ";
+    let singleRowHeight = hiddenTextarea.scrollHeight - paddingSize;
+    if (minRows !== null) {
+      minHeight = singleRowHeight * minRows;
+      if (boxSizing === "border-box") {
+        minHeight = minHeight + paddingSize + borderSize;
+      }
+      height = Math.max(minHeight, height);
+    }
+    if (maxRows !== null) {
+      maxHeight = singleRowHeight * maxRows;
+      if (boxSizing === "border-box") {
+        maxHeight = maxHeight + paddingSize + borderSize;
+      }
+      overflowY = height > maxHeight ? "" : "hidden";
+      height = Math.min(maxHeight, height);
+    }
+  }
+  // Remove scroll bar flash when autosize without maxRows
+  if (!maxRows) {
+    overflowY = "hidden";
+  }
+
+  return {
+    height: `${height}px`,
+    minHeight: `${minHeight}px`,
+    maxHeight: `${maxHeight}px`,
+    overflowY
+  };
+}
+export default calcTextareaHeight;
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+	
+		on Wed Jul 22nd 2020
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

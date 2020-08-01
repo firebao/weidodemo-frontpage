@@ -190,7 +190,7 @@ const { mapState, mapMutations } = createNamespacedHelpers("user");
 
 export default {
   name: "Login",
-  data: function() {
+  data() {
     return {
       mobile: "",
       mobileValidateState: "",

@@ -8,10 +8,11 @@
 //#        Create: 2020-07-14 14:53:20
 //# Last Modified: 2020-07-14 14:53:20
 //#***********************************************
-import store from "@/utils/clientData/cookie";
+import ClientData from "@/utils/clientData/clientData";
 import { LOGIN, LOGOUT, UPDATE_USERINFO } from "../mutationTypes";
 
 const LOGIN_TOKEN = "login_token";
+const clientData = ClientData.getStorage();
 
 //state
 const state = {
@@ -20,7 +21,7 @@ const state = {
   //手机验证码发送状态
   sendCodeState: "disabled",
   //登录后服务端返回的JWT Token
-  token: store.get(LOGIN_TOKEN) || null,
+  token: clientData.getItem(LOGIN_TOKEN) || null,
   //当前用户信息
   userInfo: null
 };
@@ -36,13 +37,12 @@ const mutations = {
     }
   },
   [LOGIN](state, payload) {
-    debugger;
     state.token = payload.token;
-    store.set(LOGIN_TOKEN, payload.token, payload.expiresTime);
+    clientData.setItem(LOGIN_TOKEN, payload.token, payload.expiresTime);
   },
   [LOGOUT](state) {
     state.token = null;
-    store.remove(LOGIN_TOKEN);
+    clientData.removeItem(LOGIN_TOKEN);
   },
   [UPDATE_USERINFO](state, payload) {
     state.userInfo = payload.userInfo;

@@ -25,19 +25,19 @@ import {
 const WEBSITE = {
   [GET_NAV]: {
     method: "get",
-    url: "/api/common/getNav"
+    url: "/api/getNav"
   },
   [GET_FOOTER_INFO]: {
     method: "get",
-    url: "/api/common/getFooterInfo"
+    url: "/api/getFooterInfo"
   },
   [GET_CATEGORY]: {
     method: "get",
-    url: "/api/common/getCategory"
+    url: "/api/getCategory"
   },
   [GET_CITY_LIST]: {
     method: "get",
-    url: "/api/common/getCityList"
+    url: "/api/getCityList"
   }
 };
 

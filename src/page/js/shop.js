@@ -10,7 +10,7 @@ export default {
     };
   },
   created: function() {
-    for(let i = 0; i < 32; i++) {
+    for (let i = 0; i < 32; i++) {
       this.shopList[i] = i;
     }
   },

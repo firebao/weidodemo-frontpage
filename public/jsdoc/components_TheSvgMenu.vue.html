@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DocStrap Source: components/TheSvgMenu.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">DocStrap</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-component_BaseLogo.html">component/BaseLogo</a></li><li><a href="module-component_TheHeader.html">component/TheHeader</a></li><li><a href="module-component_TheSvgMenu.html">component/TheSvgMenu</a></li><li><a href="module-page_Home.html">page/Home</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#calcTextareaHeight">calcTextareaHeight</a></li><li><a href="global.html#calculateNodeStyling">calculateNodeStyling</a></li><li><a href="global.html#focusFirst">focusFirst</a></li><li><a href="global.html#getNextTab">getNextTab</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: components/TheSvgMenu.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;!--
+#***********************************************
+#
+#      Filename: src/components/TheSvgMenu.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: SvgMenu组件
+#        Create: 2020-07-19 09:04:35
+# Last Modified: 2020-07-19 09:04:35
+#***********************************************
+-->
+&lt;template>
+  &lt;svg
+    width="1170"
+    height="700"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    ref="svg"
+  >
+    &lt;defs>
+      &lt;filter id="shadow">
+        &lt;feGaussianBlur
+          in="SourceAlpha"
+          stdDeviation="5"
+          result="OUT1"
+        >&lt;/feGaussianBlur>
+        &lt;feOffset in="OUT1" dx="4" dy="4" result="OUT2">&lt;/feOffset>
+        &lt;feMerge>
+          &lt;feMergeNode in="OUT2">&lt;/feMergeNode>
+          &lt;feMergeNode in="SourceGraphic">&lt;/feMergeNode>
+        &lt;/feMerge>
+      &lt;/filter>
+    &lt;/defs>
+    &lt;!-- 主菜单 -->
+    &lt;g id="main-menu" ref="mainMenu" filter="url(#shadow)">
+      &lt;!-- 中部随机选择区域（包括旋转的指针与指针的环形轨迹） -->
+      &lt;g>
+        &lt;!-- 指针的环形轨迹 -->
+        &lt;circle id="circle-path" cx="600" cy="350" r="150" />
+        &lt;!-- end 指针的环形轨迹 -->
+        &lt;!-- 指针 -->
+        &lt;circle id="pointer" ref="pointer" cx="750" cy="350" r="10" />
+        &lt;!-- end 指针 -->
+        &lt;!-- 随便逛逛圆形 -->
+        &lt;circle id="center-circle" cx="600" cy="350" r="100" />
+        &lt;!-- end 随便逛逛圆形 -->
+        &lt;!-- 色子图形 -->
+        &lt;icon-svg
+          icon-class="dice"
+          :x-axis="560"
+          :y-axis="270"
+          :width="80"
+          :height="80"
+        >&lt;/icon-svg>
+        &lt;!-- end筛子图形 -->
+        &lt;!-- 随便逛逛 button -->
+        &lt;g id="random-selector">
+          &lt;a xlink-href="" @click="randomSelect()">
+            &lt;rect x="555" y="365" rx="5" ry="5" width="90" height="30" />
+            &lt;text x="572" y="385">随便逛逛&lt;/text>
+          &lt;/a>
+        &lt;/g>
+        &lt;!-- end随便逛逛 button -->
+      &lt;/g>
+      &lt;!-- end 中部随机选择区域（包括旋转的指针与指针的环形轨迹） -->
+      &lt;!-- 新鲜水果 -->
+      &lt;a id="fruits" @click="catSelect('fruits')">
+        &lt;g class="category category-fruits">
+          &lt;title>新鲜水果&lt;/title>
+          &lt;circle r="40" cy="350" cx="350" />
+          &lt;icon-svg
+            icon-class="fruits"
+            :x-axis="325"
+            :y-axis="323"
+            :width="50"
+            :height="50"
+          >&lt;/icon-svg>
+        &lt;/g>
+      &lt;/a>
+      &lt;!-- end 新鲜水果 -->
+      &lt;!-- 新鲜蔬菜 -->
+      &lt;a id="vegetables" @click="catSelect('vegetables')">
+        &lt;g class="category category-vegetables">
+          &lt;title>新鲜蔬菜&lt;/title>
+          &lt;circle r="40" cy="173" cx="423" />
+          &lt;icon-svg
+            icon-class="vegetables"
+            :x-axis="399"
+            :y-axis="148"
+            :width="50"
+            :height="50"
+          >&lt;/icon-svg>
+        &lt;/g>
+      &lt;/a>
+      &lt;!-- end 新鲜蔬菜 -->
+      &lt;!-- 厨房用品 -->
+      &lt;a id="kitchen-goods" @click="catSelect('kitchen-goods')">
+        &lt;g class="category category-kitchen-goods">
+          &lt;title>厨房用品&lt;/title>
+          &lt;circle r="40" cy="173" cx="777" />
+          &lt;icon-svg
+            icon-class="kitchen-goods"
+            :x-axis="753"
+            :y-axis="148"
+            :width="50"
+            :height="50"
+          >&lt;/icon-svg>
+        &lt;/g>
+      &lt;/a>
+      &lt;!-- end 厨房用品 -->
+      &lt;!-- 冷冻食品 -->
+      &lt;a id="frozen-food" @click="catSelect('frozen-food')">
+        &lt;g class="category category-frozen-food">
+          &lt;title>冷冻食品&lt;/title>
+          &lt;circle r="40" cy="350" cx="850" />
+          &lt;icon-svg
+            icon-class="frozen-food"
+            :x-axis="825"
+            :y-axis="325"
+            :width="50"
+            :height="50"
+          >&lt;/icon-svg>
+        &lt;/g>
+      &lt;/a>
+      &lt;!-- end 冷冻食品 -->
+      &lt;!-- 米面粮油 -->
+      &lt;a id="rices" @click="catSelect('rices')">
+        &lt;g class="category category-rices">
+          &lt;title>米面粮油&lt;/title>
+          &lt;circle r="40" cy="527" cx="777" />
+          &lt;icon-svg
+            icon-class="rices"
+            :x-axis="752"
+            :y-axis="502"
+            :width="50"
+            :height="50"
+          >&lt;/icon-svg>
+        &lt;/g>
+      &lt;/a>
+      &lt;!-- end 米面粮油 -->
+      &lt;!-- 海鲜水产 -->
+      &lt;a id="fishes" @click="catSelect('fishes')">
+        &lt;g class="category category-fishes">
+          &lt;title>海鲜水产&lt;/title>
+          &lt;circle r="40" cy="600" cx="600" />
+          &lt;icon-svg
+            icon-class="fishes"
+            :x-axis="576"
+            :y-axis="575"
+            :width="50"
+            :height="50"
+          >&lt;/icon-svg>
+        &lt;/g>
+      &lt;/a>
+      &lt;!-- end 海鲜水产 -->
+      &lt;!-- 肉禽蛋奶 -->
+      &lt;a id="meats" @click="catSelect('meats')">
+        &lt;g class="category category-meats">
+          &lt;tilte>肉禽蛋奶&lt;/tilte>
+          &lt;circle r="40" cy="527" cx="423" />
+          &lt;icon-svg
+            icon-class="meats"
+            :x-axis="398"
+            :y-axis="502"
+            :width="50"
+            :height="50"
+          >&lt;/icon-svg>
+        &lt;/g>
+      &lt;/a>
+      &lt;!-- end 肉禽蛋奶 -->
+      &lt;!-- 更多 -->
+      &lt;a id="more" @click="catSelect('more')">
+        &lt;g class="category category-more">
+          &lt;tilte>更多&lt;/tilte>
+          &lt;circle r="40" cy="100" cx="600" />
+          &lt;icon-svg
+            icon-class="more"
+            :x-axis="575"
+            :y-axis="75"
+            :width="50"
+            :height="50"
+          >&lt;/icon-svg>
+        &lt;/g>
+      &lt;/a>
+      &lt;!-- end 更多 -->
+    &lt;/g>
+    &lt;!-- end 主菜单 -->
+  &lt;/svg>
+&lt;/template>
+&lt;script>
+import { createNamespacedHelpers } from "vuex";
+import {
+  SET_ACTIVE_CATEGORY,
+  CANCEL_ACTIVE_CATEGORY
+} from "@/store/mutationTypes";
+
+const { mapMutations } = createNamespacedHelpers("menu");
+const animateTime = 200;
+
+/**
+ * SvgMenu组件，HOME页面中SVG Men
+ * @vuedoc
+ * @exports component/TheSvgMenu
+ */
+export default {
+  name: "svgMenu",
+  data: function() {
+    return {
+      /**
+       * 整个svg的中心点
+       */
+      center: {
+        x: 600,
+        y: 350
+      },
+      /**
+       * menu数组
+       */
+      categoryArray: [
+        "fruits",
+        "vegetables",
+        "more",
+        "kitchen-goods",
+        "frozen-food",
+        "rices",
+        "fishes",
+        "meats"
+      ],
+      /**
+       * 菜单激活标志
+       */
+      menuActiveFlag: false,
+      /**
+       * 圆点旋转半径
+       */
+      pathRadius: 150,
+      /**
+       * 圆点选择路径
+       */
+      path: [],
+      //圆点dom
+      counter: 0,
+      indexCounter: null,
+      /**
+       * 定时器对象
+       */
+      timer: ""
+    };
+  },
+  mounted: function() {
+    //计算圆点旋转路径
+    for (let i = 0; i &lt; 32; i++) {
+      let x = Math.round(
+        this.center.x + this.pathRadius * Math.cos((i * Math.PI) / 16)
+      );
+      let y = Math.round(
+        this.center.y + this.pathRadius * Math.sin((i * Math.PI) / 16)
+      );
+      this.path.push({ x: x, y: y });
+    }
+    //启动定时器
+    this.timer = this.runTimer(animateTime, this.pointerAnimate);
+    this.timer.startTimer();
+  },
+  methods: {
+    ...mapMutations({
+      setActiveCategory: SET_ACTIVE_CATEGORY,
+      cancelActiveCategory: CANCEL_ACTIVE_CATEGORY
+    }),
+    /**
+     * 菜单项选择
+     * @param {string} category 菜单项名称
+     * @return void
+     */
+    catSelect(category) {
+      const mainMenuGroup = this.$refs.mainMenu;
+      const categoryGroup = mainMenuGroup.querySelector(
+        ".category-" + category
+      );
+      let arrayClass = categoryGroup.getAttribute("class").split(" ");
+
+      //点击的菜单项不是激活状态
+      if (arrayClass.indexOf("active") &lt; 0) {
+        //移除别的激活菜单项的激活状态
+        let activeCategory = mainMenuGroup.querySelector(".active");
+        if (activeCategory) {
+          let oldClass = activeCategory.getAttribute("class").split(" ");
+          oldClass.pop("active");
+          activeCategory.setAttribute("class", oldClass.join(" "));
+        }
+        arrayClass.push("active");
+
+        //设置菜单为激活状态
+        mainMenuGroup.setAttribute("class", "active");
+        this.menuActiveFlag = true;
+
+        //停止圆点旋转动画，开启一段短动画移动到选择菜单项
+        this.timer.clearTimer();
+        this.pointerMove(category);
+
+        //设置vuex
+        this.setActiveCategory({ category: category });
+      } else {
+        //点击的菜单项已经是激活状态,再次点击取消激活状态
+        arrayClass.pop("active");
+        this.menuActiveFlag = false;
+
+        //重启圆点旋转动画
+        this.timer = this.runTimer(animateTime, this.pointerAnimate);
+        this.timer.startTimer();
+
+        //设置vuex
+        this.cancelActiveCategory();
+      }
+      categoryGroup.setAttribute("class", arrayClass.join(" "));
+      let mainMenuClass = this.menuActiveFlag ? "active" : "";
+      mainMenuGroup.setAttribute("class", mainMenuClass);
+    },
+    /**
+     * 圆点预定到category指定菜单项动画
+     * @param {string} category 菜单项名称
+     * @return void
+     */
+    pointerMove(category) {
+      //动画path数组的与category之间有180度的相位差，需要调整
+      let index = this.categoryArray.indexOf(category);
+      let counts = ((index + 4) % 8) * 4 - this.counter;
+      counts = counts &lt; 0 ? counts + 32 : counts;
+      this.timer = this.runTimer(animateTime, this.pointerAnimate, counts);
+      this.timer.startTimer();
+    },
+    /**
+     * 圆点旋转动画
+     * @return void
+     */
+    pointerAnimate() {
+      this.counter = (this.counter + 1) % this.path.length;
+      this.$refs.pointer.setAttribute("cx", this.path[this.counter].x);
+      this.$refs.pointer.setAttribute("cy", this.path[this.counter].y);
+    },
+    /**
+     * 随便逛逛
+     * @return void
+     */
+    randomSelect() {
+      let random, randomCategory, activeCategory;
+      do {
+        random = Math.floor(Math.random() * this.categoryArray.length);
+        randomCategory = this.categoryArray[random];
+        if (this.menuActiveFlag) {
+          activeCategory = document
+            .querySelector("#main-menu .active")
+            .getAttribute("class");
+        } else {
+          break;
+        }
+      } while (activeCategory.indexOf(randomCategory) >= 0);
+      this.catSelect(this.categoryArray[random]);
+    },
+    /**
+     *优化定时器函数
+     *@param {int} animateTime: 定时器时间间隔
+     *@param {Function} callback: 定时器执行函数
+     *@param {int} counts: 指定执行多少次后停止
+     *@return {object} {clearTimer. startTimer}
+     */
+    runTimer(animateTime, callback, counts = "disabled") {
+      //记录开始时间
+      let counter = 0;
+      let startTime = getTime();
+      let timer = [];
+      //获取当前时间
+      function getTime() {
+        return new Date().getTime();
+      }
+      //定时器主函数,
+      //@diffTime: 为保证定时器间隔一定，diffTime为此次执行需要减少的时间
+      function timeout(diffTime) {
+        let runtime = animateTime - diffTime;
+        timer.push(
+          setTimeout(() => {
+            if (counter == counts &amp;&amp; counts != "disabled") {
+              clearTimer();
+              return;
+            }
+            let tmp = startTime;
+            callback();
+            counter++;
+            startTime = getTime();
+            diffTime = startTime - tmp - animateTime;
+            timeout(diffTime);
+          }, runtime)
+        );
+      }
+      //计时器停止
+      function clearTimer() {
+        timer.forEach(function(timer) {
+          clearTimeout(timer);
+        });
+        timer = [];
+      }
+      //计时器开始
+      function startTimer() {
+        timeout(0);
+      }
+      return { clearTimer, startTimer };
+    }
+  }
+};
+&lt;/script>
+&lt;style lang="scss">
+@import "@/assets/css/base";
+svg {
+  #main-menu {
+    transition: all 0.5s ease-in;
+    #circle-path {
+      fill: none;
+      stroke-width: 5px;
+      stroke: #aabf77;
+    }
+    #pointer {
+      transition: all 0.2s linear;
+      fill: red;
+      stroke: none;
+    }
+    #center-circle {
+      fill: #aabf77;
+      stroke: #a9a9a9;
+    }
+    #random-selector {
+      a {
+        rect {
+          fill: $aux-color-yellow-base;
+          stroke-width: 2;
+          stroke: #000000;
+        }
+        &amp;:hover {
+          rect {
+            fill: $aux-color-green-base;
+          }
+        }
+      }
+    }
+    a {
+      circle {
+        fill: $primary-color-base;
+        stroke: black;
+        stroke-width: 2;
+      }
+      .active {
+        transition: all 0.25s ease-in;
+        circle {
+          fill: $accent-color;
+        }
+      }
+      &amp;:hover {
+        g {
+          @extend .active;
+        }
+      }
+    }
+    #fruits {
+      .active {
+        transform: scale(1.1) translate(-32px, -32px);
+      }
+      &amp;:hover {
+        g {
+          @extend .active;
+        }
+      }
+    }
+    #vegetables {
+      .active {
+        transform: scale(1.1) translate(-38px, -16px);
+      }
+      &amp;:hover {
+        g {
+          @extend .active;
+        }
+      }
+    }
+    #kitchen-goods {
+      .active {
+        transform: scale(1.1) translate(-71px, -15px);
+      }
+      &amp;:hover {
+        g {
+          @extend .active;
+        }
+      }
+    }
+    #frozen-food {
+      .active {
+        transform: scale(1.1) translate(-77px, -32px);
+      }
+      &amp;:hover {
+        g {
+          @extend .active;
+        }
+      }
+    }
+    #rices {
+      .active {
+        transform: scale(1.1) translate(-70px, -48px);
+      }
+      &amp;:hover {
+        g {
+          @extend .active;
+        }
+      }
+    }
+    #fishes {
+      .active {
+        transform: scale(1.1) translate(-55px, -55px);
+      }
+      &amp;:hover {
+        g {
+          @extend .active;
+        }
+      }
+    }
+    #meats {
+      .active {
+        transform: scale(1.1) translate(-38px, -48px);
+      }
+      &amp;:hover {
+        g {
+          @extend .active;
+        }
+      }
+    }
+    #more {
+      .active {
+        transform: scale(1.1) translate(-55px, -9px);
+      }
+      &amp;:hover {
+        g {
+          @extend .active;
+        }
+      }
+    }
+    &amp;.active {
+      transform: scale(0.6) translate(0px, 233px);
+    }
+  }
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+	
+		on Wed Jul 22nd 2020
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

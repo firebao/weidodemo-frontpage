@@ -4,11 +4,14 @@
 * {
   box-sizing: border-box;
 }
+html {
+  font-size: 10px;
+}
 body {
   font: {
     family: $font-family;
     weight: normal;
-    size: 14px;
+    size: 1.4rem;
   }
   background-color: $bg-color;
   color: $text-color;
@@ -16,7 +19,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  
+
   .rel-div {
     position: relative;
   }

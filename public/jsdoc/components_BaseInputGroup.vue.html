@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DocStrap Source: components/BaseInputGroup.vue</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">DocStrap</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-component_BaseLogo.html">component/BaseLogo</a></li><li><a href="module-component_TheHeader.html">component/TheHeader</a></li><li><a href="module-component_TheSvgMenu.html">component/TheSvgMenu</a></li><li><a href="module-page_Home.html">page/Home</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#calcTextareaHeight">calcTextareaHeight</a></li><li><a href="global.html#calculateNodeStyling">calculateNodeStyling</a></li><li><a href="global.html#focusFirst">focusFirst</a></li><li><a href="global.html#getNextTab">getNextTab</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: components/BaseInputGroup.vue</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">&lt;!--
+#***********************************************
+#
+#      Filename: /root/vue-demo/src/components/BaseInputGroup.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: 用户登录、注册输入框组
+#        Create: 2020-07-11 10:12:54
+# Last Modified: 2020-07-11 10:12:54
+#***********************************************
+-->
+&lt;template>
+  &lt;div class="wrapper">
+    &lt;div class="label flex v-middle">
+      &lt;label :for="id">{{ label }}&lt;/label>
+    &lt;/div>
+    &lt;div class="input-group">
+      &lt;input
+        :type="type"
+        :name="name"
+        :id="id"
+        :value="currentValue"
+        :maxLength="maxLength"
+        :placeholder="placeHolder"
+        :prop="prop"
+        :autofocus="autofocus"
+        @input="handleInput"
+        @keyup.enter="handleValidate"
+        @blur="handleValidate"
+        @change="handleValidate"
+        style="ime-mode:disable"
+      />
+      &lt;span class="icon flex v-middle h-middle">
+        &lt;icon-svg class="i20" :icon-class="icon">&lt;/icon-svg>
+      &lt;/span>
+      &lt;span class="icon-validate-state flex v-middle h-middle">
+        &lt;transition
+          enter-active-class="animated rotateIn"
+          leave-active-class="animated rotateOut"
+          mode="out-in"
+        >
+          &lt;icon-svg
+            key="success"
+            class="i20"
+            icon-class="success"
+            v-if="validateState === 'success'"
+          >
+          &lt;/icon-svg>
+          &lt;icon-svg
+            key="error"
+            class="i20"
+            icon-class="error"
+            v-if="validateState === 'error'"
+          >
+          &lt;/icon-svg>
+        &lt;/transition>
+      &lt;/span>
+      &lt;slot v-bind:flag="validateState">&lt;/slot>
+      &lt;transition
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+      >
+        &lt;div class="error-tip" v-if="validateState === 'error'">
+          {{ validateMessage }}
+        &lt;/div>
+      &lt;/transition>
+    &lt;/div>
+  &lt;/div>
+&lt;/template>
+&lt;script>
+export default {
+  name: "BaseInputGroup",
+  data: function() {
+    return {
+      currentValue: this.value,
+      validateState: "",
+      validateMessage: "",
+      defaultRule: {
+        mobile: [
+          { required: true, message: "手机号码不能为空" },
+          { pattern: /^1[34578]\d{9}$/, message: "手机号码格式不正确" }
+        ],
+        captcha: [
+          { required: true, message: "动态验证码不能为空" },
+          { pattern: /^\d{4}$/, message: "验证码格式不正确" }
+        ],
+        password: [
+          { required: true, message: "密码不能为空" },
+          { range: { min: 8, max: 16 }, message: "密码长度为8-16位" }
+        ]
+      }
+    };
+  },
+  props: {
+    //是否自动获得输入焦点
+    autofocus: {
+      type: Boolean,
+      default: false
+    },
+    prop: {
+      type: String,
+      required: true
+    },
+    icon: {
+      type: String,
+      required: true
+    },
+    label: {
+      type: String,
+      required: true
+    },
+    placeHolder: {
+      type: String,
+      required: true
+    },
+    type: {
+      type: String,
+      default: "text",
+      validator: function(value) {
+        return (
+          ["text", "password", "url", "email", "date", "number", "tel"].indexOf(
+            value
+          ) !== -1
+        );
+      }
+    },
+    name: {
+      type: String
+    },
+    id: {
+      type: String
+    },
+    value: {
+      type: [String, Number],
+      default: ""
+    },
+    rule: {
+      type: Object,
+      default: function() {
+        return {};
+      }
+    },
+    flag: {
+      type: String,
+      default: "prending"
+    }
+  },
+  inject: ["form"],
+  computed: {
+    maxLength: function() {
+      if (this.type === "tel") return 11;
+      if (this.name === "captcha") return 4;
+      return "";
+    }
+  },
+  methods: {
+    /**
+     * @desc: 获取验证规则
+     * @returns: {object}
+     */
+    getRule: function() {
+      let rule = new Object();
+      rule[this.prop] = Object.assign(this.rule, this.defaultRule)[this.prop];
+      return rule;
+    },
+    /**
+     * @desc: input事件触发
+     * @param: {Event} event
+     * @returns: void
+     */
+    handleInput: function(event) {
+      let value = event.currentTarget.value;
+      if (this.type === "tel" || this.prop == "mobile") {
+        //restrict to only digits
+        value = value.replace(/[^\d]/g, "");
+        //insert space in mobile number
+        value = value.replace(/^(.{3})(.{4})(.{4})$/, "$1 $2 $3");
+      } else if (this.prop === "captcha") {
+        //restrict to only digits
+        value = value.replace(/[^\d]/g, "");
+      }
+      this.$emit("input", value);
+      this.setCurrentValue(value);
+    },
+    setCurrentValue(value) {
+      this.currentValue = value;
+    },
+    /**
+     * @desc: 方法描述
+     * @param: {Closure} callback 验证后的回调函数
+     * @returns: void
+     */
+    handleValidate: function(callback) {
+      let rule, value, cv;
+      cv = this.currentValue;
+      //romove space
+      if (cv) cv = cv.replace(/\s/g, "");
+      //package the async-validateor's parameters
+      value = new Object();
+      value[this.prop] = cv;
+      rule = this.getRule();
+      //validate
+      this.$validator(rule).validate(value, { firstFields: true }, errors => {
+        //set state and error message
+        this.validateState = !errors ? "success" : "error";
+        this.validateMessage = errors ? errors[0].message : "";
+        if (this.prop === "mobile") {
+          let state = errors ? false : true;
+          this.$store.commit("setMobileState", state);
+        }
+        typeof callback === "function" ? callback(this.validateMessage) : "";
+      });
+    },
+    dispatchEvent: function(eventName, params) {
+      if (typeof this.form !== "object") {
+        console.error("BaseInputFroup must be in component BaseForm");
+        return;
+      }
+      this.form.$emit.apply(this.form, [eventName].concat(params));
+      this.form.$emit.apply(this.form, [eventName].concat(params));
+    }
+  },
+  mounted: function() {
+    if (this.prop) {
+      this.dispatchEvent("form.addField", this);
+    }
+  },
+  beforeDestroy: function() {
+    if (this.prop) {
+      this.dispatchEvent("form.removeField", {
+        prop: this.prop
+      });
+    }
+  }
+};
+&lt;/script>
+&lt;style scoped lang="scss">
+@import "@/assets/css/base.scss";
+.wrapper {
+  .label {
+    transition: all 0.4s ease-in-out;
+    height: 35px;
+    font-weight: 600px;
+  }
+
+  .input-group {
+    position: relative;
+    .icon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      /deep/ svg use {
+        --fill-color: #ccc;
+      }
+    }
+    .error-tip {
+      color: $error-color;
+      width: 200px;
+      line-height: 36px;
+      margin-left: 15px;
+      position: absolute;
+      top: 0;
+      left: 300px;
+      border: 2px dashed $error-color;
+      text-align: center;
+      &amp;:after {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: -20px;
+        width: 0;
+        height: 0;
+        border: 10px dashed transparent;
+        border-right-color: $error-color;
+      }
+    }
+
+    .icon-validate-state {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+    }
+
+    .button-captcha {
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      width: 100px;
+      background-color: #ccc;
+      color: white;
+      position: absolute;
+      margin-right: 10px;
+      right: 0;
+      top: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      &amp;:hover {
+        background-color: #999;
+      }
+    }
+    .move-left.button-captcha {
+      right: 30px;
+    }
+
+    input {
+      width: 100%;
+      height: 40px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      padding: 0 40px;
+      transition: all 0.4s ease-in-out;
+      &amp;:focus {
+        border-color: $accent-color;
+      }
+
+      &amp;:focus + .icon {
+        /deep/ svg use {
+          --fill-color: #7fba00;
+        }
+      }
+    }
+  }
+  &amp;:hover {
+    .label {
+      color: $accent-color;
+    }
+
+    .icon {
+      /deep/ svg use {
+        --fill-color: #7fba00;
+      }
+    }
+
+    input {
+      border-color: $accent-color;
+    }
+  }
+}
+&lt;/style>
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	DocStrap Copyright © 2012-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+	
+		on Wed Jul 22nd 2020
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

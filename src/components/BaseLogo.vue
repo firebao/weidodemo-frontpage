@@ -1,12 +1,23 @@
+<!--
+#***********************************************
+#
+#      Filename: /root/vue-demo/src/components/BaseLogo.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: BaseLogo 组件
+#        Create: 2020-07-17 10:36:35
+# Last Modified: 2020-07-17 10:36:35
+#***********************************************
+-->
 <template>
   <div class="main-logo">
-    <router-link class="flex v-middle" to="/" v-if="type === 'single'">
+    <router-link to="/" v-if="logoType === 'single'">
       <icon-svg class="i40" icon-class="logo"></icon-svg>
-      <strong>
+      <h1>
         Weido
-      </strong>
+      </h1>
     </router-link>
-    <router-link class="flex v-middle" to="/" v-else>
+    <router-link to="/" v-else>
       <icon-svg class="i40" icon-class="logo"></icon-svg>
       <p class="big">WeiDo</p>
       <p class="small">we will do what you need</p>
@@ -14,10 +25,20 @@
   </div>
 </template>
 <script>
+/**
+ * BaseLogo组件,页面中用到的Logo
+ * @vuedoc
+ * @exports component/BaseLogo
+ */
 export default {
   name: "BaseLogo",
   props: {
-    type: {
+    /**
+     * logo的类型，有single和complex两种类型
+     * single类型指logo右边仅有weido文字
+     * complex类型指logo右边不仅有weido文字还有we will do what you need的小字
+     */
+    logoType: {
       type: String,
       default: "single",
       validator: function(value) {
@@ -27,28 +48,29 @@ export default {
   }
 };
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 @import "@/assets/css/base.scss";
 .main-logo {
   position: relative;
 
   a {
     height: 40px;
+    display: flex;
 
     &:hover {
-      /deep/ svg {
+      svg {
         use {
           --hover-color: #7fba00;
         }
       }
-      strong,
+      h1,
       p,
       small {
         color: $accent-color;
       }
     }
 
-    strong {
+    h1 {
       color: $text-color;
       font-size: 20px;
       font-weight: 900;

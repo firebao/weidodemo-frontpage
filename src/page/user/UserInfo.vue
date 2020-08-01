@@ -34,13 +34,12 @@
       <div class="user-photo" v-else-if="activeTab === 'userPhoto'">
         <div class="column-left">
           <div class="box-info">
-            <img :src="require('@/assets/img/2.png').default" alt="">
+            <img :src="require('@/assets/img/2.png').default" alt="" />
           </div>
           <div class="area upload-area"></div>
           <div class="recommend">
             <div class="title">推荐头像</div>
-            <div class="list">
-            </div>
+            <div class="list"></div>
           </div>
         </div>
         <div class="column-right">
@@ -49,8 +48,8 @@
             你上传的图片会自动生成2种尺寸,请注意小尺寸的头像是否清晰
           </div>
           <div class="over-view">
-            <img src="" alt="">
-            <img src="" alt="">
+            <img src="" alt="" />
+            <img src="" alt="" />
           </div>
         </div>
       </div>

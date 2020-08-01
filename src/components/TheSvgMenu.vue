@@ -1,44 +1,50 @@
+<!--
+#***********************************************
+#
+#      Filename: src/components/TheSvgMenu.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: SvgMenu组件
+#        Create: 2020-07-19 09:04:35
+# Last Modified: 2020-07-19 09:04:35
+#***********************************************
+-->
 <template>
   <svg
-    width="1200"
+    width="1170"
     height="700"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:svg="http://www.w3.org/2000/svg"
+    ref="svg"
   >
-    <!-- main menu -->
-    <g id="main-menu">
-      <!-- center random selector -->
+    <defs>
+      <filter id="shadow">
+        <feGaussianBlur
+          in="SourceAlpha"
+          stdDeviation="5"
+          result="OUT1"
+        ></feGaussianBlur>
+        <feOffset in="OUT1" dx="4" dy="4" result="OUT2"></feOffset>
+        <feMerge>
+          <feMergeNode in="OUT2"></feMergeNode>
+          <feMergeNode in="SourceGraphic"></feMergeNode>
+        </feMerge>
+      </filter>
+    </defs>
+    <!-- 主菜单 -->
+    <g id="main-menu" ref="mainMenu" filter="url(#shadow)">
+      <!-- 中部随机选择区域（包括旋转的指针与指针的环形轨迹） -->
       <g>
-        <path
-          id="path"
-          d="m450.00005,350c0,-82.87293 67.12707,-150 150,-150c82.87293,0 150,67.12707 150,150c0,82.87293 -67.12707,150 -150,150c-82.87293,0 -150,-67.12707 -150,-150z"
-          stroke-linecap="null"
-          stroke-linejoin="null"
-          stroke-dasharray="null"
-          stroke-width="5"
-          stroke="#7fba00"
-          fill="none"
-        />
-        <!-- pointer -->
-        <circle
-          stroke="#000000"
-          id="pointer"
-          r="10"
-          cy="350"
-          cx="750"
-          fill="#aabf77"
-        />
-        <!-- end pointer -->
-        <circle
-          stroke="#000000"
-          stroke-opacity="0"
-          id="svg_1"
-          r="100"
-          cy="350"
-          cx="600"
-          stroke-width="5"
-          fill="#7fba00"
-        />
+        <!-- 指针的环形轨迹 -->
+        <circle id="circle-path" cx="600" cy="350" r="150" />
+        <!-- end 指针的环形轨迹 -->
+        <!-- 指针 -->
+        <circle id="pointer" ref="pointer" cx="750" cy="350" r="10" />
+        <!-- end 指针 -->
+        <!-- 随便逛逛圆形 -->
+        <circle id="center-circle" cx="600" cy="350" r="100" />
+        <!-- end 随便逛逛圆形 -->
+        <!-- 色子图形 -->
         <icon-svg
           icon-class="dice"
           :x-axis="560"
@@ -46,20 +52,22 @@
           :width="80"
           :height="80"
         ></icon-svg>
-        <!-- random select button -->
+        <!-- end筛子图形 -->
+        <!-- 随便逛逛 button -->
         <g id="random-selector">
           <a xlink-href="" @click="randomSelect()">
-            <rect x="555" y="365" width="90" height="30" />
+            <rect x="555" y="365" rx="5" ry="5" width="90" height="30" />
             <text x="572" y="385">随便逛逛</text>
           </a>
         </g>
-        <!-- end random select button -->
+        <!-- end随便逛逛 button -->
       </g>
-      <!-- end -->
-      <!-- fruits shops -->
-      <a xlink-href="" id="fruits" @click="catSelect('fruits')">
+      <!-- end 中部随机选择区域（包括旋转的指针与指针的环形轨迹） -->
+      <!-- 新鲜水果 -->
+      <a id="fruits" @click="catSelect('fruits')">
         <g class="category category-fruits">
-          <circle id="svg_11" r="40" cy="350" cx="350" />
+          <title>新鲜水果</title>
+          <circle r="40" cy="350" cx="350" />
           <icon-svg
             icon-class="fruits"
             :x-axis="325"
@@ -69,11 +77,12 @@
           ></icon-svg>
         </g>
       </a>
-      <!-- end -->
-      <!-- vegetables shops -->
-      <a xlink-ref="" id="vegetables" @click="catSelect('vegetables')">
+      <!-- end 新鲜水果 -->
+      <!-- 新鲜蔬菜 -->
+      <a id="vegetables" @click="catSelect('vegetables')">
         <g class="category category-vegetables">
-          <circle id="svg_13" r="40" cy="173" cx="423" />
+          <title>新鲜蔬菜</title>
+          <circle r="40" cy="173" cx="423" />
           <icon-svg
             icon-class="vegetables"
             :x-axis="399"
@@ -83,11 +92,12 @@
           ></icon-svg>
         </g>
       </a>
-      <!-- end -->
-      <!-- kitchen-goods shops -->
-      <a xlink-href="" id="kitchen-goods" @click="catSelect('kitchen-goods')">
+      <!-- end 新鲜蔬菜 -->
+      <!-- 厨房用品 -->
+      <a id="kitchen-goods" @click="catSelect('kitchen-goods')">
         <g class="category category-kitchen-goods">
-          <circle id="svg_14" r="40" cy="173" cx="777" />
+          <title>厨房用品</title>
+          <circle r="40" cy="173" cx="777" />
           <icon-svg
             icon-class="kitchen-goods"
             :x-axis="753"
@@ -97,11 +107,12 @@
           ></icon-svg>
         </g>
       </a>
-      <!-- end -->
-      <!-- frozen-food shops -->
-      <a xlink-href="" id="frozen-food" @click="catSelect('frozen-food')">
+      <!-- end 厨房用品 -->
+      <!-- 冷冻食品 -->
+      <a id="frozen-food" @click="catSelect('frozen-food')">
         <g class="category category-frozen-food">
-          <circle id="svg_15" r="40" cy="350" cx="850" />
+          <title>冷冻食品</title>
+          <circle r="40" cy="350" cx="850" />
           <icon-svg
             icon-class="frozen-food"
             :x-axis="825"
@@ -111,11 +122,12 @@
           ></icon-svg>
         </g>
       </a>
-      <!-- end -->
-      <!-- rices shops -->
-      <a xlink-href="" id="rices" @click="catSelect('rices')">
+      <!-- end 冷冻食品 -->
+      <!-- 米面粮油 -->
+      <a id="rices" @click="catSelect('rices')">
         <g class="category category-rices">
-          <circle id="svg_16" r="40" cy="527" cx="777" />
+          <title>米面粮油</title>
+          <circle r="40" cy="527" cx="777" />
           <icon-svg
             icon-class="rices"
             :x-axis="752"
@@ -125,11 +137,12 @@
           ></icon-svg>
         </g>
       </a>
-      <!-- end -->
-      <!-- fishes shops -->
-      <a xlink-href="" id="fishes" @click="catSelect('fishes')">
+      <!-- end 米面粮油 -->
+      <!-- 海鲜水产 -->
+      <a id="fishes" @click="catSelect('fishes')">
         <g class="category category-fishes">
-          <circle id="svg_17" r="40" cy="600" cx="600" />
+          <title>海鲜水产</title>
+          <circle r="40" cy="600" cx="600" />
           <icon-svg
             icon-class="fishes"
             :x-axis="576"
@@ -139,11 +152,12 @@
           ></icon-svg>
         </g>
       </a>
-      <!-- end -->
-      <!-- meats shops -->
-      <a xlink-href="" id="meats" @click="catSelect('meats')">
+      <!-- end 海鲜水产 -->
+      <!-- 肉禽蛋奶 -->
+      <a id="meats" @click="catSelect('meats')">
         <g class="category category-meats">
-          <circle id="svg_18" r="40" cy="527" cx="423" />
+          <tilte>肉禽蛋奶</tilte>
+          <circle r="40" cy="527" cx="423" />
           <icon-svg
             icon-class="meats"
             :x-axis="398"
@@ -153,11 +167,12 @@
           ></icon-svg>
         </g>
       </a>
-      <!-- end -->
-      <!-- more  -->
-      <a xlink-href="" id="more" @click="catSelect('more')">
+      <!-- end 肉禽蛋奶 -->
+      <!-- 更多 -->
+      <a id="more" @click="catSelect('more')">
         <g class="category category-more">
-          <circle id="svg_18" r="40" cy="100" cx="600" />
+          <tilte>更多</tilte>
+          <circle r="40" cy="100" cx="600" />
           <icon-svg
             icon-class="more"
             :x-axis="575"
@@ -167,22 +182,40 @@
           ></icon-svg>
         </g>
       </a>
-      <!-- end more-->
+      <!-- end 更多 -->
     </g>
-    <!-- end main-menu -->
+    <!-- end 主菜单 -->
   </svg>
 </template>
 <script>
+import { createNamespacedHelpers } from "vuex";
+import {
+  SET_ACTIVE_CATEGORY,
+  CANCEL_ACTIVE_CATEGORY
+} from "@/store/mutationTypes";
+
+const { mapMutations } = createNamespacedHelpers("menu");
+const animateTime = 200;
+
+/**
+ * SvgMenu组件，HOME页面中SVG Men
+ * @vuedoc
+ * @exports component/TheSvgMenu
+ */
 export default {
   name: "svgMenu",
-  data() {
+  data: function() {
     return {
-      //中心点
+      /**
+       * 整个svg的中心点
+       */
       center: {
         x: 600,
         y: 350
       },
-      //商品分类
+      /**
+       * menu数组
+       */
       categoryArray: [
         "fruits",
         "vegetables",
@@ -193,17 +226,24 @@ export default {
         "fishes",
         "meats"
       ],
-      //菜单激活标志
+      /**
+       * 菜单激活标志
+       */
       menuActiveFlag: false,
-      //圆点旋转半径
+      /**
+       * 圆点旋转半径
+       */
       pathRadius: 150,
-      //圆点选装路径
+      /**
+       * 圆点选择路径
+       */
       path: [],
       //圆点dom
-      pointer: "",
       counter: 0,
       indexCounter: null,
-      //定时器
+      /**
+       * 定时器对象
+       */
       timer: ""
     };
   },
@@ -218,20 +258,30 @@ export default {
       );
       this.path.push({ x: x, y: y });
     }
-    this.pointer = document.querySelector("#pointer");
     //启动定时器
-    this.timer = this.runTimer(200, this.pointerAnimate);
+    this.timer = this.runTimer(animateTime, this.pointerAnimate);
     this.timer.startTimer();
   },
   methods: {
-    //菜单项选择
+    ...mapMutations({
+      setActiveCategory: SET_ACTIVE_CATEGORY,
+      cancelActiveCategory: CANCEL_ACTIVE_CATEGORY
+    }),
+    /**
+     * 菜单项选择
+     * @param {string} category 菜单项名称
+     * @return void
+     */
     catSelect(category) {
-      let mainMenuGroup = document.querySelector("#main-menu");
-      let categoryGroup = document.querySelector(".category-" + category);
+      const mainMenuGroup = this.$refs.mainMenu;
+      const categoryGroup = mainMenuGroup.querySelector(
+        ".category-" + category
+      );
       let arrayClass = categoryGroup.getAttribute("class").split(" ");
+
       //点击的菜单项不是激活状态
       if (arrayClass.indexOf("active") < 0) {
-        //移除原有的激活菜单项的激活状态
+        //移除别的激活菜单项的激活状态
         let activeCategory = mainMenuGroup.querySelector(".active");
         if (activeCategory) {
           let oldClass = activeCategory.getAttribute("class").split(" ");
@@ -239,44 +289,59 @@ export default {
           activeCategory.setAttribute("class", oldClass.join(" "));
         }
         arrayClass.push("active");
+
         //设置菜单为激活状态
         mainMenuGroup.setAttribute("class", "active");
         this.menuActiveFlag = true;
+
         //停止圆点旋转动画，开启一段短动画移动到选择菜单项
         this.timer.clearTimer();
         this.pointerMove(category);
+
         //设置vuex
-        this.$store.commit("setActiveCategory", { category: category });
+        this.setActiveCategory({ category: category });
       } else {
         //点击的菜单项已经是激活状态,再次点击取消激活状态
         arrayClass.pop("active");
         this.menuActiveFlag = false;
+
         //重启圆点旋转动画
-        this.timer = this.runTimer(200, this.pointerAnimate);
+        this.timer = this.runTimer(animateTime, this.pointerAnimate);
         this.timer.startTimer();
+
         //设置vuex
-        this.$store.commit("cancelActiveCategory");
+        this.cancelActiveCategory();
       }
       categoryGroup.setAttribute("class", arrayClass.join(" "));
       let mainMenuClass = this.menuActiveFlag ? "active" : "";
       mainMenuGroup.setAttribute("class", mainMenuClass);
     },
-    //圆点移动到category指定菜单项
+    /**
+     * 圆点预定到category指定菜单项动画
+     * @param {string} category 菜单项名称
+     * @return void
+     */
     pointerMove(category) {
+      //动画path数组的与category之间有180度的相位差，需要调整
       let index = this.categoryArray.indexOf(category);
       let counts = ((index + 4) % 8) * 4 - this.counter;
       counts = counts < 0 ? counts + 32 : counts;
-      console.log(counts);
-      this.timer = this.runTimer(200, this.pointerAnimate, counts);
+      this.timer = this.runTimer(animateTime, this.pointerAnimate, counts);
       this.timer.startTimer();
     },
-    //圆点旋转动画
+    /**
+     * 圆点旋转动画
+     * @return void
+     */
     pointerAnimate() {
       this.counter = (this.counter + 1) % this.path.length;
-      this.pointer.setAttribute("cx", this.path[this.counter].x);
-      this.pointer.setAttribute("cy", this.path[this.counter].y);
+      this.$refs.pointer.setAttribute("cx", this.path[this.counter].x);
+      this.$refs.pointer.setAttribute("cy", this.path[this.counter].y);
     },
-    //随便逛逛
+    /**
+     * 随便逛逛
+     * @return void
+     */
     randomSelect() {
       let random, randomCategory, activeCategory;
       do {
@@ -292,10 +357,13 @@ export default {
       } while (activeCategory.indexOf(randomCategory) >= 0);
       this.catSelect(this.categoryArray[random]);
     },
-    //优化定时器函数
-    //@animateTime: 定时器时间间隔
-    //@callback: 定时器执行函数
-    //@counts: 指定执行多少次后停止
+    /**
+     *优化定时器函数
+     *@param {int} animateTime: 定时器时间间隔
+     *@param {Function} callback: 定时器执行函数
+     *@param {int} counts: 指定执行多少次后停止
+     *@return {object} {clearTimer. startTimer}
+     */
     runTimer(animateTime, callback, counts = "disabled") {
       //记录开始时间
       let counter = 0;
@@ -337,18 +405,30 @@ export default {
       }
       return { clearTimer, startTimer };
     }
+  },
+  destroyed() {
+    this.cancelActiveCategory();
   }
 };
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 @import "@/assets/css/base";
 svg {
   #main-menu {
     transition: all 0.5s ease-in;
+    #circle-path {
+      fill: none;
+      stroke-width: 5px;
+      stroke: #aabf77;
+    }
     #pointer {
       transition: all 0.2s linear;
       fill: red;
       stroke: none;
+    }
+    #center-circle {
+      fill: #aabf77;
+      stroke: #a9a9a9;
     }
     #random-selector {
       a {
@@ -463,7 +543,7 @@ svg {
       }
     }
     &.active {
-      transform: scale(0.6) translate(0px, 233px);
+      transform: scale(0.6) translate(-230px, 233px);
     }
   }
 }
