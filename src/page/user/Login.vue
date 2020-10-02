@@ -11,7 +11,9 @@
 -->
 <template>
   <div>
+    <!-- 适用于登录注册页面的header -->
     <simple-header title="用户登录" :type="loginType"></simple-header>
+    <!-- end 适用于登录注册页面的header -->
     <main>
       <div class="main-container">
         <div class="login-container">
@@ -20,7 +22,7 @@
             leave-active-class="animated fadeOutLeft"
             mode="out-in"
           >
-            <!-- login with captcha -->
+            <!-- 手机验证码登录 -->
             <base-form
               ref="loginCaptcha"
               v-if="loginType === 'loginCaptcha'"
@@ -42,6 +44,7 @@
                 name="mobile"
                 id="mobile"
                 type="tel"
+                ref="mobile"
               >
               </input-group>
               <input-group
@@ -85,7 +88,7 @@
                   <icon-svg class="i20" icon-class="weibo"></icon-svg>
                 </span>
               </div>
-              <!-- befor send code the slide verify need to do -->
+              <!-- 滑块验证dialog -->
               <base-dialog
                 v-model="dialogShow"
                 :closable="false"
@@ -101,10 +104,10 @@
                   </slide-verification>
                 </div>
               </base-dialog>
-              <!-- end -->
+              <!-- end 滑块验证dialog -->
             </base-form>
-            <!-- end login with captcha -->
-            <!-- login with password -->
+            <!-- end 手机验证码登录 -->
+            <!-- 账号密码登录 -->
             <base-form
               ref="loginPass"
               method="post"
@@ -158,7 +161,9 @@
                 </span>
               </div>
             </base-form>
+            <!-- end 账号密码登录 -->
           </transition>
+          <!-- 第三方登录弹出层 -->
           <base-dialog
             v-model="oauthShowOrHide"
             :title="oauthLoginObject.title"
@@ -170,34 +175,62 @@
               :src="oauthLoginObject.url"
             ></iframe>
           </base-dialog>
+          <!-- end第三方登录弹出层 -->
         </div>
       </div>
     </main>
   </div>
 </template>
 <script>
-import { createNamespacedHelpers } from "vuex";
-import { Checkbox } from "view-design";
 import SimpleHeader from "@/components/TheSimpleHeader";
 import InputGroup from "@/components/BaseInputGroup";
 import BaseForm from "@/components/BaseForm";
 import BaseDialog from "@/components/BaseDialog";
 import SlideVerification from "@/components/SlideVerification";
+import { createNamespacedHelpers } from "vuex";
+import { Checkbox } from "view-design";
 import dayjs from "dayjs";
-import { LOGIN, SET_MOBILE_STATE } from "@/store/mutationTypes";
+import { LOGIN } from "@/store/mutationTypes";
+import { SEND_CMS_CODE } from "@/utils/request/requestTypes";
 
-const { mapState, mapMutations } = createNamespacedHelpers("user");
+const { mapMutations } = createNamespacedHelpers("user");
 
+/**
+ * 用户登录页面
+ * @vuedoc
+ * @exports page/Home
+ */
 export default {
   name: "Login",
   data() {
     return {
+      /**
+       * 手机号码，与手机号码输入框绑定
+       */
       mobile: "",
+      /**
+       * 手机号码验证状态
+       */
       mobileValidateState: "",
+      /**
+       * 手机验证码，与手机号码验证码输入框绑定
+       */
       captcha: "",
+      /**
+       * 密码，与密码输入框绑定
+       */
       password: "",
+      /**
+       * 登录类型，分为验证码登录与账号密码登录
+       */
       loginType: "loginCaptcha",
+      /**
+       * 滑块验证弹层显示
+       */
       dialogShow: false,
+      /**
+       * 验证标识
+       */
       verifyFlag: false,
       slideVerification: false,
       currentForm: "",
@@ -214,9 +247,9 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      mobileState: state => state.mobileValidateState
-    })
+    mobileState() {
+      return this.$refs.mobile.validateState;
+    }
   },
   watch: {
     oauthType: function(oauthType) {
@@ -248,26 +281,25 @@ export default {
   },
   methods: {
     ...mapMutations({
-      storeToken: LOGIN,
-      storeMobileState: SET_MOBILE_STATE
+      storeToken: LOGIN
     }),
     /**
-     * @desc: 设置登录模式为手机+密码
-     * @returns: void
+     * 设置登录模式为手机+密码
+     * @return: void
      */
     loginPass: function() {
       this.loginType = "loginPass";
     },
     /**
-     * @desc: 设置登录模式为手机+验证码
-     * @returns: void
+     * 设置登录模式为手机+验证码
+     * @return: void
      */
     loginCaptcha: function() {
       this.loginType = "loginCaptcha";
     },
     /**
      * @desc: 发送验证码按键点击事件
-     * @returns: void
+     * @return: void
      */
     handleSendCode: function() {
       this.setDialogShow(true);
@@ -275,33 +307,38 @@ export default {
     /**
      * @desc: 滑块验证弹出框显示影藏切换
      * @param: {bool} value
-     * @returns: void
+     * @return: void
      */
     setDialogShow(value) {
       this.dialogShow = value;
     },
     /**
      * @desc: 滑块验证成功
-     * @returns: void
+     * @return: void
      */
-    handleVerifyOk: function() {
+    handleVerifyOk() {
       this.setDialogShow(false);
-      this.$store.commit("setSendCoteState", "verifySuccess");
       this.sendCode();
     },
     /**
      * @desc: 发送短信验证码
-     * @returns: void
+     * @return: void
      */
-    sendCode: async function() {
-      let data = {};
-      data.mobile = this.mobile;
-      let res = await this.$Http.sendCmsCode(data);
-      console.log(res);
+    sendCode() {
+      const data = {
+        mobile: this.mobile.replace(/\s+/g, "")
+      };
+      this.$Http[SEND_CMS_CODE](data)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     /**
      * @desc: 登录操作
-     * @returns: void
+     * @return: void
      */
     doLogin: async function() {
       //表单验证

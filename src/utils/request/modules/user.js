@@ -20,7 +20,11 @@ import { SEND_CMS_CODE, LOGIN, LOGIN_MOBILE } from "../requestTypes";
 const USER = {
   [SEND_CMS_CODE]: {
     method: "post",
-    url: "/api/user/sendCmsCode"
+    url: "/api/sendSmsCode",
+    options: {
+      successTips: true,
+      errorTips: true
+    }
   },
   [LOGIN]: {
     method: "post",

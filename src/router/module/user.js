@@ -2,7 +2,6 @@ export default [
   //用户中心
   {
     path: "/user",
-    name: "User",
     meta: {
       title: "用户中心",
       keepAlive: true
@@ -100,7 +99,6 @@ export default [
   //用户登录
   {
     path: "/user/login",
-    name: "UserLogin",
     meta: {
       title: "用户登录",
       keepAlive: true
@@ -110,7 +108,6 @@ export default [
   },
   {
     path: "/user/register",
-    name: "UserRegister",
     meta: {
       title: "用户注册",
       keepAlive: true

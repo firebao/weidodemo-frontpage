@@ -10,7 +10,11 @@
 #***********************************************
 -->
 <template>
-  <form @submit.prevent="handleSubmit" method="post">
+  <form
+    @submit.prevent="handleSubmit"
+    :autocomplete="autocomplete"
+    method="post"
+  >
     <div class="handler">
       <slot name="handler"></slot>
     </div>
@@ -18,29 +22,55 @@
   </form>
 </template>
 <script>
+/**
+ * 基本Form组件
+ * @vuedoc
+ * @exports component/BaseForm
+ */
 export default {
   name: "BaseForm",
-  componentName: "BaseForm",
   data: function() {
     return {
+      /**
+       * Form组件的fields
+       */
       fields: [],
+      /**
+       * Form组件验证错误信息
+       */
       formError: {}
     };
   },
   props: {
-    model: Object,
-    rules: Object
+    /**
+     * 表单验证规则
+     */
+    rules: Object,
+    /**
+     * autocomplete
+     */
+    autocomplete: {
+      valedator(value) {
+        return ["on", "off"].indexOf(value) !== -1;
+      },
+      default: "off"
+    }
   },
   provide() {
     return { form: this };
   },
+  watch: {
+    rules() {
+      this.validate();
+    }
+  },
   methods: {
     /**
-     * @desc: 对表单进行验证
-     * @param: {object} fieldProp=null
-     *  null代表对表单的所有field进行验证
-     *  需要对特定的field验证，传入field的prop
-     * @returns: {Promise}
+     * 对表单进行验证
+     * @param: {object} fieldProp=null 验证的field
+     *   null表示对表单的所有field进行验证
+     *   需要对特定的field验证，传入field的prop
+     * @return: {Promise}
      */
     validate: function(fieldProp = null) {
       return new Promise(resolve => {
@@ -53,12 +83,20 @@ export default {
                 valid = false;
               }
               if (++count === this.fields.length || fieldProp !== null) {
-                // all finish
                 resolve(valid);
               }
             });
           }
         });
+      });
+    },
+    /**
+     * 重置表单
+     * @return void
+     */
+    resetFielsd() {
+      this.fields.forEach(field => {
+        field.resetField();
       });
     }
   },

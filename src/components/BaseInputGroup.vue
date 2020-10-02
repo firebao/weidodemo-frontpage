@@ -11,7 +11,7 @@
 -->
 <template>
   <div class="wrapper">
-    <div class="label flex v-middle">
+    <div class="label">
       <label :for="id">{{ label }}</label>
     </div>
     <div class="input-group">
@@ -72,9 +72,21 @@ export default {
   name: "BaseInputGroup",
   data: function() {
     return {
+      /**
+       * input的value
+       */
       currentValue: this.value,
+      /**
+       * 验证状态
+       */
       validateState: "",
+      /**
+       * 验证信息
+       */
       validateMessage: "",
+      /**
+       * 默认验证规则
+       */
       defaultRule: {
         mobile: [
           { required: true, message: "手机号码不能为空" },
@@ -92,27 +104,44 @@ export default {
     };
   },
   props: {
-    //是否自动获得输入焦点
+    /**
+     * 是否自动获得输入焦点
+     */
     autofocus: {
       type: Boolean,
       default: false
     },
+    /**
+     * 验证域
+     */
     prop: {
       type: String,
       required: true
     },
+    /**
+     * 前置图标
+     */
     icon: {
       type: String,
       required: true
     },
+    /**
+     * 标签lable
+     */
     label: {
       type: String,
       required: true
     },
+    /**
+     * input的placeHolder
+     */
     placeHolder: {
       type: String,
       required: true
     },
+    /**
+     * input的类型
+     */
     type: {
       type: String,
       default: "text",
@@ -124,16 +153,28 @@ export default {
         );
       }
     },
+    /**
+     * input的name
+     */
     name: {
       type: String
     },
+    /**
+     * input的id
+     */
     id: {
       type: String
     },
+    /**
+     * input的原始值
+     */
     value: {
       type: [String, Number],
       default: ""
     },
+    /**
+     * input的验证规则
+     */
     rule: {
       type: Object,
       default: function() {
@@ -236,8 +277,10 @@ export default {
 </script>
 <style scoped lang="scss">
 @import "@/assets/css/base.scss";
+@import "@/assets/css/layout.scss";
 .wrapper {
   .label {
+    @include flex-layout($justify-content: flex-start);
     transition: all 0.4s ease-in-out;
     height: 35px;
     font-weight: 600px;

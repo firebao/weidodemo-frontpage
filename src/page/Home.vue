@@ -19,7 +19,7 @@
       <section class="main">
         <div class="main-container rel-div">
           <div class="img-bg">
-            <img :src="require('@/assets/bg.png').default" alt=".." />
+            <img :src="require('@/assets/bg.png')" alt=".." />
           </div>
           <svg-menu></svg-menu>
           <sub-menu></sub-menu>
@@ -37,6 +37,7 @@ import MallHeader from "@/components/TheHeader.vue";
 import MallFooter from "@/components/TheFooter.vue";
 import SvgMenu from "@/components/TheSvgMenu.vue";
 import SubMenu from "@/components/TheSubMenu.vue";
+
 /**
  * Home页面，首页
  * @vuedoc

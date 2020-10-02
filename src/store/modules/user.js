@@ -13,12 +13,12 @@ import ClientData from "@/utils/clientData/clientData";
 import Http from "@/utils/request/request";
 import { Message } from "view-design";
 import {
+  LOCATION_INFO,
   LOGIN,
   LOGOUT,
   UPDATE_USERINFO,
   USERINFO,
   UPDATE_LOCATIONINFO,
-  SET_MOBILE_STATE,
   SET_SEND_CODE_STATE
 } from "@/store/mutationTypes";
 
@@ -29,9 +29,9 @@ const state = {
   token: clientData.getItem("login_status") || null,
   //用户信息
   userInfo: null,
-  //用户所在城市信息
+  //用户所在地理位置
   locationInfo: null,
-  //手机+验证码登录页面发送验证码前滑块验证的验证状态
+  //登录页面手机号码是否有效
   mobileValidateState: false,
   //手机验证码发送状态
   sendCodeState: "disabled"
@@ -39,6 +39,10 @@ const state = {
 
 //mutations
 const mutations = {
+  //用户所在地理位置设置
+  [LOCATION_INFO](state, payload) {
+    state.locationInfo = payload;
+  },
   //用户登入
   [LOGIN](state, payload) {
     state.token = payload.token;
@@ -56,10 +60,6 @@ const mutations = {
   //更新用户位置信息
   [UPDATE_LOCATIONINFO](state, payload) {
     state.locationInfo = payload.locationInfo;
-  },
-  //手机验证码发送状态
-  [SET_MOBILE_STATE](state, payload) {
-    state.mobileValidateState = payload;
   },
   [SET_SEND_CODE_STATE](state, payload) {
     if (["verifySuccess"].indexOf(payload) >= 0) {

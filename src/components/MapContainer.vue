@@ -1,86 +1,129 @@
+<!--
+#***********************************************
+#
+#      Filename: src/components/MapContainer.vue
+#
+#        Author: wwj - 318348750@qq.com
+#   Description: MapContainer组件
+#        Create: 2020-08-13 10:19:59
+# Last Modified: 2020-08-13 10:19:59
+#***********************************************
+-->
 <template>
-  <div>
+  <!-- MapContainer wrap -->
+  <div
+    class="wrap flex"
+    :style="{
+      'z-index': $parent.locationList || $parent.dropdown ? -1 : 1
+    }"
+  >
+    <!-- poi-list -->
+    <div class="poi-list">
+      <div class="total-addr">共{{ poiList ? poiList.count : 0 }}个地址</div>
+      <ul>
+        <li
+          v-for="(item, index) in poiList.pois"
+          :key="index"
+          class="poiItem"
+          :class="{ active: index % 10 === 0 }"
+          @click="setPoi(index)"
+          :data-id="index"
+        >
+          <span class="tag">{{
+            ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"][index]
+          }}</span>
+          <span class="name">{{ item.name }}</span>
+        </li>
+      </ul>
+      <base-page
+        :total="poiList.count"
+        className="poi-list-page"
+        @on-change="changePoiListPage"
+        mode="scroll"
+      >
+      </base-page>
+    </div>
+    <!-- end poi-list -->
+    <!-- 地图 -->
     <div
-      class="wrap flex"
+      class="container"
+      id="amap-container"
       :style="{
         'z-index': $parent.locationList || $parent.dropdown ? -1 : 1
       }"
-    >
-      <div class="poi-list">
-        <div class="total-addr">共{{ poiList ? poiList.count : 0 }}个地址</div>
-        <ul>
-          <li
-            v-for="(item, index) in poiList.pois"
-            :key="index"
-            class="poiItem"
-            :class="{ active: index % 10 === 0 }"
-            @click="setPoi(index)"
-            :data-id="index"
-          >
-            <span class="tag">{{
-              ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"][index]
-            }}</span>
-            <span class="name">{{ item.name }}</span>
-          </li>
-        </ul>
-        <base-page
-          :total="poiList.count"
-          className="poi-list-page"
-          @on-change="changePoiListPage"
-          mode="scroll"
-        >
-        </base-page>
+    ></div>
+    <!-- end 地图 -->
+    <!-- 当前位置 -->
+    <div class="current-location" v-if="locationDetail">
+      <span class="label">当前地址：</span>
+      <div :title="locationDetail.detail" class="address">
+        {{ locationDetail.detail }}
       </div>
-      <div
-        class="container"
-        id="amap-container"
-        :style="{
-          'z-index': $parent.locationList || $parent.dropdown ? -1 : 1
-        }"
-      ></div>
-      <div class="current-location" v-if="locationDetail">
-        <span class="label">当前地址：</span>
-        <div :title="locationDetail.detail" class="address">
-          {{ locationDetail.detail }}
-        </div>
-        <div class="button-dashed" @click="submitLocation">确定</div>
-      </div>
+      <div class="button-dashed" @click="submitLocation">确定</div>
     </div>
+    <!-- end 当前位置 -->
   </div>
+  <!-- end MapContainer wrap -->
 </template>
 <script>
 import BasePage from "@/components/BasePage";
+import { LOCATION_INFO } from "@/store/mutationTypes";
+import { createNamespacedHelpers } from "vuex";
+
+const { mapMutations, mapState } = createNamespacedHelpers("user");
 const indexAlpha = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+
+/**
+ * MapContainer组件
+ * @vuedoc
+ * @exports compontent/MapContainer
+ */
 export default {
   name: "MapContainer",
   data: function() {
     return {
+      /**
+       * poi信息列表
+       */
       poiList: {},
+      /**
+       * 地图对象
+       */
       amap: null,
-      //地图上的点标记
+      /**
+       * 地图上的点标记
+       */
       marker: null,
-      //用户在地图上的标记点
+      /**
+       * 用户在地图上的标记点
+       */
       selfMarker: null,
-      //用户地址信息
+      /**
+       * 用户地址信息
+       */
       locationDetail: null,
+      /**
+       * 当前页码
+       */
       currentIndex: 0
     };
   },
+  props: {
+    /**
+     * 地址搜索关键词
+     */
+    searchKeywords: String,
+    /**
+     * 选定的城市信息
+     */
+    city: String,
+    /**
+     * 地图对象
+     */
+    map: Object
+  },
   components: {
     BasePage
-  },
-  created: function() {
-    this.$nextTick(function() {
-      this.amap = new this.map.Map("amap-container");
-      this.amap.setZoom(18);
-      this.amap.on("click", this.addSelfMarker);
-    });
-    this.getPoiList(this.searchKeywords, this.city);
-  },
-  props: {
-    searchKeywords: String,
-    city: String,
-    map: Object
   },
   watch: {
     searchKeywords: function() {
@@ -90,8 +133,22 @@ export default {
       this.getPoiList(this.searchKeywords, this.city);
     }
   },
+  computed: {
+    ...mapState({
+      locationInfo: state => state.locationInfo
+    })
+  },
   methods: {
-    //获取地址列表
+    ...mapMutations({
+      setLocationInfo: LOCATION_INFO
+    }),
+    /**
+     * 获取poi地址列表
+     * @param {string} searchKeywords 地址关键字
+     * @param {string} city 目标城市
+     * @param {int} pageIndex 页码
+     * @return void
+     */
     getPoiList(searchKeywords, city, pageIndex = 1) {
       const _this = this;
       if (Object.keys(this.map).length !== 0) {
@@ -131,7 +188,11 @@ export default {
         });
       }
     },
-    //更改地址列表分页
+    /**
+     * 更改地址列表分页
+     * @param {int} page 页码
+     * @return void
+     */
     changePoiListPage(page) {
       this.selfMarker && this.selfMarker.remove();
       this.selfMarker = null;
@@ -140,7 +201,11 @@ export default {
       domActiveItem && (domActiveItem.className = "poiItem");
       document.querySelectorAll(".poiItem")[0].className = "poiItem active";
     },
-    //设置Poi地址
+    /**
+     * 选择poi地址为当前地址
+     * @param {index} index poi地址在poi地址列表中的索引
+     * @return void
+     */
     setPoi(index) {
       this.selfMarker && this.selfMarker.remove();
       this.selfMarker = null;
@@ -154,7 +219,11 @@ export default {
       this.amap.setCenter(this.poiList.pois[index].location);
       this.setLocationDetail(this.poiList.pois[index].location);
     },
-    //在地图上标记自身位置
+    /**
+     * 在地图上标记自身位置
+     * @param {Event} event
+     * @retunr void
+     */
     addSelfMarker(event) {
       const domActiveItem = document.querySelector(".poiItem.active");
       domActiveItem && (domActiveItem.className = "poiItem");
@@ -182,7 +251,11 @@ export default {
         _this.amap.add(_this.selfMarker);
       });
     },
-    //设置详细地址
+    /**
+     * 设置详细地址
+     * @param {Object} lnglat lnglat对象
+     * @return void
+     */
     setLocationDetail(lnglat) {
       const _this = this;
       this.map.plugin("AMap.Geocoder", () => {
@@ -191,7 +264,6 @@ export default {
         });
         geocoder.getAddress(lnglat, (status, result) => {
           if (status === "complete" && result.info === "OK") {
-            console.log(result);
             _this.locationDetail = {
               lng: lnglat.getLng(),
               lat: lnglat.getLat(),
@@ -201,13 +273,24 @@ export default {
         });
       });
     },
-    //地址确定
+    /**
+     * 地址确定按键事件
+     * @return void
+     */
     submitLocation() {
-      const locationInfo = this.$store.state.user.locationInfo;
-      locationInfo.detail = this.locationDetail;
-      this.$store.commit("UPDATE_LOCATIONINFO", locationInfo);
+      const locationInfo = this.locationInfo;
+      let payload = Object.assign({}, locationInfo, this.locationDetail);
+      this.setLocationInfo(payload);
       window.history.go(-1);
     }
+  },
+  created: function() {
+    this.$nextTick(function() {
+      this.amap = new this.map.Map("amap-container");
+      this.amap.setZoom(18);
+      this.amap.on("click", this.addSelfMarker);
+    });
+    this.getPoiList(this.searchKeywords, this.city);
   }
 };
 </script>
@@ -271,16 +354,20 @@ export default {
     width: 75%;
   }
   .current-location {
+    padding: 10px;
     position: absolute;
-    top: -50px;
+    top: -65px;
     right: 0;
+    border: 3px dashed $accent-color;
+    border-radius: 5px;
     display: flex;
     .label {
       color: $secondary-text-color;
+      font-weight: 600;
     }
     .address {
+      max-width: 400px;
       padding-right: 20px;
-      width: 200px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

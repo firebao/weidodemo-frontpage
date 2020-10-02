@@ -50,15 +50,15 @@
         <div class="box qr-code">
           <div class="qr-item">
             <p>安卓app</p>
-            <img :src="require('@/assets/qr-code.png').default" alt="" />
+            <img :src="require('@/assets/qr-code.png')" alt="" />
           </div>
           <div class="qr-item">
             <p>苹果app</p>
-            <img :src="require('@/assets/qr-code.png').default" alt="" />
+            <img :src="require('@/assets/qr-code.png')" alt="" />
           </div>
           <div class="qr-item">
             <p>微信公众号</p>
-            <img :src="require('@/assets/qr-code.png').default" alt="" />
+            <img :src="require('@/assets/qr-code.png')" alt="" />
           </div>
         </div>
       </div>
@@ -69,6 +69,7 @@
 <script>
 import BaseLogo from "@/components/BaseLogo";
 import { GET_FOOTER_INFO } from "@/utils/request/requestTypes";
+import ClientData from "@/utils/clientData/clientData";
 /**
  * TheFooter组件,页面中用到的Logo
  * @vuedoc
@@ -88,13 +89,19 @@ export default {
     BaseLogo
   },
   created() {
-    this.$Http[GET_FOOTER_INFO]()
-      .then(res => {
-        this.footerInfo = res.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    const clientData = ClientData.getStorage("session");
+    if (!clientData.has("footer-info")) {
+      this.$Http[GET_FOOTER_INFO]()
+        .then(res => {
+          this.footerInfo = res.data;
+          clientData.setItem("footer-info", this.footerInfo);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } else {
+      this.footerInfo = clientData.getItem("footer-info");
+    }
   }
 };
 </script>
@@ -159,7 +166,7 @@ export default {
       padding: 10px;
     }
     p {
-      font-size: 12px;
+      font-size: 1.2rem;
     }
     .qr-code {
       @include flex-layout($justify-content: space-around);

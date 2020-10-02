@@ -120,8 +120,7 @@ const router = new VueRouter({
         keepAlive: true
       },
       component: NotFound
-    },
-    ...Module
+    }
   ]
 });
 

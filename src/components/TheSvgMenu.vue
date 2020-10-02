@@ -238,29 +238,15 @@ export default {
        * 圆点选择路径
        */
       path: [],
-      //圆点dom
+      /**
+       * 圆点位置计数
+       */
       counter: 0,
-      indexCounter: null,
       /**
        * 定时器对象
        */
       timer: ""
     };
-  },
-  mounted: function() {
-    //计算圆点旋转路径
-    for (let i = 0; i < 32; i++) {
-      let x = Math.round(
-        this.center.x + this.pathRadius * Math.cos((i * Math.PI) / 16)
-      );
-      let y = Math.round(
-        this.center.y + this.pathRadius * Math.sin((i * Math.PI) / 16)
-      );
-      this.path.push({ x: x, y: y });
-    }
-    //启动定时器
-    this.timer = this.runTimer(animateTime, this.pointerAnimate);
-    this.timer.startTimer();
   },
   methods: {
     ...mapMutations({
@@ -406,8 +392,24 @@ export default {
       return { clearTimer, startTimer };
     }
   },
+  mounted: function() {
+    //计算圆点旋转路径
+    for (let i = 0; i < 32; i++) {
+      let x = Math.round(
+        this.center.x + this.pathRadius * Math.cos((i * Math.PI) / 16)
+      );
+      let y = Math.round(
+        this.center.y + this.pathRadius * Math.sin((i * Math.PI) / 16)
+      );
+      this.path.push({ x: x, y: y });
+    }
+    //启动定时器
+    this.timer = this.runTimer(animateTime, this.pointerAnimate);
+    this.timer.startTimer();
+  },
   destroyed() {
     this.cancelActiveCategory();
+    this.timer.clearTimer();
   }
 };
 </script>

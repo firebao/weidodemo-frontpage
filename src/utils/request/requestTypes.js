@@ -9,7 +9,7 @@
 //# Last Modified: 2020-07-15 17:06:50
 //#***********************************************
 
-export const SEND_CMS_CODE = "sendCmsCoden"; //发送短信验证码
+export const SEND_CMS_CODE = "sendCmsCode"; //发送短信验证码
 export const LOGIN = "login"; //用户登录(手机+密码)
 export const LOGIN_MOBILE = "loginMobile"; //用户登录(手机+验证码)
 export const GET_NAV = "getNav"; //获取主导航信息

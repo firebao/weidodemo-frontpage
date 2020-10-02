@@ -1,7 +1,13 @@
 //layout.scss公共的布局模块
 
+//flex布局
 @mixin flex-layout($justify-content: center, $align-items: center) {
     display: flex;
     justify-content: $justify-content;
     align-items: $align-items;
+}
+//空间居中布局
+@mixin content-center() {
+    display: grid;
+    place-items: center;
 }

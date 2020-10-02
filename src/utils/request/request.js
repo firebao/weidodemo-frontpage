@@ -96,15 +96,16 @@ instance.interceptors.request.use(
 //设置响应拦截器
 instance.interceptors.response.use(
   res => {
+    debugger;
     Message.destroy();
     if (res.data.status === "success" && res.config.successTips) {
       Message.success({
-        content: res.data.message,
+        content: res.data.msg,
         duration: 2
       });
     } else if (res.data.status === "fail" && res.config.errorTips) {
       Message.error({
-        content: res.data.message,
+        content: res.data.msg,
         duration: 2
       });
     } else if (res.data.status === "needAuth") {

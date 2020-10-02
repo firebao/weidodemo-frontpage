@@ -51,6 +51,7 @@
 <script>
 import { createNamespacedHelpers } from "vuex";
 import { GET_CATEGORY } from "@/utils/request/requestTypes";
+import ClientData from "@/utils/clientData/clientData";
 const { mapState } = createNamespacedHelpers("menu");
 
 /**
@@ -70,13 +71,19 @@ export default {
   },
   created() {
     //获取商品分类数据
-    this.$Http[GET_CATEGORY]()
-      .then(res => {
-        this.category = res.data;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    const clientData = ClientData.getStorage("session");
+    if (!clientData.has("category")) {
+      this.$Http[GET_CATEGORY]()
+        .then(res => {
+          this.category = res.data;
+          clientData.setItem("category", this.category);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else {
+      this.category = clientData.getItem("category");
+    }
   },
   computed: {
     ...mapState({
@@ -107,8 +114,7 @@ export default {
       }
       return subMenu;
     }
-  },
-  methods: {}
+  }
 };
 </script>
 <style scoped lang="scss">
