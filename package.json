@@ -17,7 +17,7 @@
     "animate.css": "^3.7.2",
     "async-validate": "^1.0.1",
     "async-validator": "^3.4.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-preset-stage-0": "^6.24.1",
     "core-js": "^3.6.5",
     "dayjs": "^1.8.32",
