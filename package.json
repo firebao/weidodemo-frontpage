@@ -43,7 +43,7 @@
     "@vue/cli-plugin-eslint": "^4.4.6",
     "@vue/cli-plugin-router": "^4.4.6",
     "@vue/cli-plugin-vuex": "^4.4.6",
-    "@vue/cli-service": "^4.4.6",
+    "@vue/cli-service": "^5.0.8",
     "@vue/eslint-config-prettier": "^5.0.0",
     "@vue/test-utils": "^1.0.3",
     "axios-mock-adapter": "^1.18.2",
@@ -71,7 +71,7 @@
     "prettier": "^1.19.1",
     "sherry-docstrap": "^1.3.2",
     "sinon": "^9.0.2",
-    "svg-sprite-loader": "^4.3.0",
+    "svg-sprite-loader": "^6.0.11",
     "vue-lazyload": "^1.3.3",
     "vue-template-compiler": "^2.6.10",
     "webpack-node-externals": "^2.5.0"
